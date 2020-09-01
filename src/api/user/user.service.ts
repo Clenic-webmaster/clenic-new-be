@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/models/interfaces';
@@ -18,7 +18,13 @@ export class UserService {
   }
 
   async getUserById(userId: string): Promise<User> {
-    const user = await this.userModel.findById(userId).populate('role');
+    const user = await this.userModel.findById(userId).populate('role')
+      .catch((error) => {
+        throw new HttpException({
+          message: 'An error has occurred, please contact your administrator.',
+          error
+        }, HttpStatus.INTERNAL_SERVER_ERROR);
+      })
     return user;
   }
 
