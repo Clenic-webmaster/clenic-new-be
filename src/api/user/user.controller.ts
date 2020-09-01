@@ -10,6 +10,7 @@ import {
   Param,
   HttpStatus,
   NotFoundException,
+  HttpException,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import {
@@ -19,30 +20,37 @@ import {
 import { UserService } from './user.service';
 
 @ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) { }
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('all')
   async getAll(@Request() req) {
     const users = await this.userService.getUsers();
     return users;
   }
 
-  @ApiParam({ name: 'id' })
   @Delete('/:id')
   async deleteUser(@Res() res, @Param('id') id) {
     const user = await this.userService.deleteUser(id);
     if (!user) throw new NotFoundException('User does not exists');
     return res.status(HttpStatus.OK).json({
       message: 'User Deleted',
+      user,
+    });
+  }
+
+  @Get('/:id')
+  async getUser(@Res() res, @Param('id') id) {
+    const user = await this.userService.getUserById(id);
+    if (!user) throw new NotFoundException('User does not exists');
+    return res.status(HttpStatus.OK).json({
       user,
     });
   }

@@ -3,6 +3,7 @@ import { UserService } from '../api/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { hash, compare } from 'bcrypt';
 import { RoleService } from 'src/api/role/role.service';
+import { IUserSession } from 'src/utils/types';
 
 @Injectable()
 export class AuthService {
@@ -27,23 +28,109 @@ export class AuthService {
   }
 
   async login(user: any) {
-
     const payload = {
       userId: user._id,
       role: user.role
     };
 
-    return {
-      access_token: this.jwtService.sign(payload),
-      user,
-    };
+    var relatedUser = await this.userService.getUserById(user._id)
+      .catch((error) => {
+        throw new HttpException({
+          message: 'An error has occurred, please contact your administrator.',
+          error
+        }, HttpStatus.INTERNAL_SERVER_ERROR);
+      })
+
+    if (relatedUser) {
+      let access_token = this.jwtService.sign(payload);
+      relatedUser.sessions.push({
+        jwt: access_token,
+        identifierDevice: `DEFAULT_DEVICE_${access_token.substr(access_token.length - 5, access_token.length)}`,
+        lastActive: new Date(),
+        location: `DEFAULT_DEVICE_${access_token.substr(access_token.length - 5, access_token.length)}`
+      })
+      await relatedUser.save()
+        .catch((error) => {
+          throw new HttpException({
+            message: 'An error has occurred, please contact your administrator.',
+            error
+          }, HttpStatus.INTERNAL_SERVER_ERROR);
+        })
+
+      return {
+        access_token: this.jwtService.sign(payload),
+        user: relatedUser,
+      };
+    }
   }
-  //1998-10-14T14:48:00.000
+
+  async logout(sessionToken: any, userId: string) {
+    var relatedUser = await this.userService.getUserById(userId)
+      .catch((error) => {
+        throw new HttpException({
+          message: 'An error has occurred, please contact your administrator.',
+          error
+        }, HttpStatus.INTERNAL_SERVER_ERROR);
+      })
+
+    if (relatedUser) {
+      let indexOfSession = relatedUser.sessions.findIndex((value: IUserSession) => {
+        return value.jwt == sessionToken;
+      })
+      if (indexOfSession >= 0) {
+        relatedUser.sessions.splice(indexOfSession, 1);
+        await relatedUser.save()
+          .catch((error) => {
+            throw new HttpException({
+              message: 'An error has occurred, please contact your administrator.',
+              error
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
+          })
+        return {
+          message: 'The session has been closed successfully',
+        };
+      } else {
+        throw new HttpException({
+          message: 'There is no active sessions with the requested token.',
+        }, HttpStatus.BAD_REQUEST);
+      }
+    } else {
+      throw new HttpException({
+        message: 'User does not exist.'
+      }, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async checkJWtInSession(jwt: string, userId: string) {
+    var relatedUser = await this.userService.getUserById(userId)
+      .catch((error) => {
+        throw new HttpException({
+          message: 'An error has occurred, please contact your administrator.',
+          error
+        }, HttpStatus.INTERNAL_SERVER_ERROR);
+      })
+
+    if (relatedUser) {
+      let indexOfSession = relatedUser.sessions.findIndex((value: IUserSession) => {
+        return value.jwt == jwt;
+      })
+      if (indexOfSession >= 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      throw new HttpException({
+        message: 'User does not exist.'
+      }, HttpStatus.BAD_REQUEST);
+    }
+  }
+
   async register(user: any) {
     let findUser = await this.userService.getUserByEmail(user.email);
     if (findUser) {
-      throw new HttpException({ 
-        message: 'Email already taken.' 
+      throw new HttpException({
+        message: 'Email already taken.'
       }, HttpStatus.BAD_REQUEST);
     } else {
       if (

@@ -9,6 +9,11 @@ export class LoginUserDto {
   readonly password: string;
 }
 
+export class LogoutUserDto {
+  @ApiProperty()
+  readonly sessionToken: string;
+}
+
 export class UserDto {
 
   @ApiProperty()
