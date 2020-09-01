@@ -8,6 +8,7 @@ import { database } from './utils/constants';
 import { RoleModule } from './api/role/role.module';
 import { BussinessModule } from './api/bussiness/bussiness.module';
 import { OrderModule } from './api/order/order.module';
+import { EquipmentModule } from './api/equipment/equipment.module';
 
 const urlDb = database.url + database.dev.db;
 
@@ -19,6 +20,7 @@ const urlDb = database.url + database.dev.db;
     RoleModule,
     BussinessModule,
     OrderModule,
+    EquipmentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
