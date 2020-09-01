@@ -6,6 +6,8 @@ import { UserModule } from './api/user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { database } from './utils/constants';
 import { RoleModule } from './api/role/role.module';
+import { BussinessModule } from './api/bussiness/bussiness.module';
+import { OrderModule } from './api/order/order.module';
 
 const urlDb = database.url + database.dev.db;
 
@@ -15,6 +17,8 @@ const urlDb = database.url + database.dev.db;
     UserModule,
     MongooseModule.forRoot(urlDb),
     RoleModule,
+    BussinessModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
