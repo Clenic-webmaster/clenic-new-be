@@ -30,5 +30,9 @@ export const security = {
     HOLIDAYS_STATE: "VACACIONES",
     ON_ROUTE_STATE: "EN RUTA",
     AVAILABLE: "DISPONIBLE"
+  },
+  bussinessTypes: {
+    COMPANY: 'EMPRESA_MANTENIMIENTO',
+    CLENIC: 'CLENIC',
   }
 };

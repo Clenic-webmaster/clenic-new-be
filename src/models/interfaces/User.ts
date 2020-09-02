@@ -1,6 +1,7 @@
 import { Document } from 'mongoose';
 import { Role } from './Role';
 import { IPosition, IUserPersonalInformation, IUserSession } from 'src/utils/types';
+import { Bussiness } from './Bussiness';
 
 export class User extends Document {
   readonly _id: string;
@@ -11,5 +12,6 @@ export class User extends Document {
   readonly state?: "INACTIVO" | "VACACIONES" | "EN RUTA" | "DISPONIBLE";
   readonly personalInformation?: IUserPersonalInformation;
   readonly sessions?: [IUserSession];
-  readonly role?: Role;
+  bussiness?: Bussiness | string;
+  readonly role?: Role | string;
 }

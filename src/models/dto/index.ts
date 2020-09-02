@@ -1,4 +1,4 @@
-export { LoginUserDto, UserDto, LogoutUserDto } from './UserDto';
+export { LoginUserDto, UserDto, LogoutUserDto, RegisterUserAdminDto, UserBussinessInformationDto } from './UserDto';
 export { RoleDto } from './RoleDto';
 export { BussinessDto } from './BussinessDto';
 export { EquipmentDto } from './EquipmentDto';

@@ -1,5 +1,4 @@
 import { Schema } from 'mongoose';
-import { security } from 'src/utils/constants';
 
 export const UserSchema = new Schema({
   identifier: { type: String, required: true },
@@ -29,5 +28,6 @@ export const UserSchema = new Schema({
       lastActive: { type: Date, required: false, default: Date.now() }
     }
   ],
+  bussiness: { type: Schema.Types.ObjectId, ref: 'Bussiness' },
   role: { type: Schema.Types.ObjectId, ref: 'Role', required: true }
 }, { collection: 'users' });
