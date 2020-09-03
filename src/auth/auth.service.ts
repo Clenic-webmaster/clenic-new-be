@@ -338,7 +338,7 @@ export class AuthService {
   }
 
   private getIdentifier(value?: string) {
-    let identifier: string = value.toLowerCase().replace(' ', '_');
+    let identifier: string = value.toLowerCase().replace(/\s+/g, '_');
     return identifier;
   }
 }
