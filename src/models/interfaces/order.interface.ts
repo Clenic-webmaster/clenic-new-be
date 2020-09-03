@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
-import { User } from './User';
-import { Equipment } from './Equipment';
-import { Bussiness } from './Bussiness';
+import { User } from './user.interface';
+import { Equipment } from './equipment.interface';
+import { Bussiness } from './bussiness.interface';
 import { IPosition } from 'src/utils/types';
 
 export class Order extends Document {

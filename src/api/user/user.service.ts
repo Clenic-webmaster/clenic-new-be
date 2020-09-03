@@ -1,7 +1,7 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types, ClientSession, Connection } from 'mongoose';
-import { User, Role } from 'src/models/interfaces';
+import { User, Role, Bussiness } from 'src/models/interfaces';
 import { UserDto } from 'src/models/dto';
 import { hash } from 'bcrypt';
 import { ErrorHandler } from 'src/utils/errors';
@@ -16,11 +16,6 @@ export class UserService {
   async getUserModelSession(): Promise<ClientSession> {
     const session = await this.userModel.db.startSession()
     return session;
-  }
-
-  async getUsers(): Promise<User[]> {
-    const users = await this.userModel.find().populate('role');
-    return users;
   }
 
   async checkValidUserBussinessIdentifier(identifier: string, roleId: string): Promise<boolean> {
@@ -42,12 +37,36 @@ export class UserService {
     return user;
   }
 
-  async updateUserBusiness(user: UserDto, session: ClientSession): Promise<User> {
-    const myUser = await this.userModel.findByIdAndUpdate(user._id, { bussiness: user.bussiness }, { session })
+  async handleValidClenicEmailInBussiness(email: string, companyIdentifier?: string,): Promise<boolean> {
+    const users: User[] = await this.userModel.find({ identifier: companyIdentifier }).populate('bussiness.clenics')
       .catch((error) => {
         throw ErrorHandler.throwDefaultInternalServerError(error);
       })
-    return myUser;
+    if (users.length <= 0) {
+      throw ErrorHandler.throwNotFoundError('Bussiness');
+    }
+    const relatedCompany: Bussiness = users[0].bussiness as Bussiness;
+    const clenics: User[] = relatedCompany.clenics;
+    if (clenics.filter((value) => { return value.email == email; }).length > 0) {
+      throw ErrorHandler.throwCustomError('Email is already taken in the company.', HttpStatus.BAD_REQUEST);
+    }
+    return true;
+  }
+
+  async handleValidClenicIdentifierInBussiness(clenicIdentifier: string, companyIdentifier?: string,): Promise<boolean> {
+    const users: User[] = await this.userModel.find({ identifier: companyIdentifier }).populate('bussiness.clenics')
+      .catch((error) => {
+        throw ErrorHandler.throwDefaultInternalServerError(error);
+      })
+    if (users.length <= 0) {
+      throw ErrorHandler.throwNotFoundError('Bussiness');
+    }
+    const relatedCompany: Bussiness = users[0].bussiness as Bussiness;
+    const clenics: User[] = relatedCompany.clenics;
+    if (clenics.filter((value) => { return value.identifier == clenicIdentifier; }).length > 0) {
+      throw ErrorHandler.throwCustomError('The clenic identifier is already taken in the company.', HttpStatus.BAD_REQUEST);
+    }
+    return true;
   }
 
   async getUserByUsername(username: string): Promise<User> {
@@ -56,7 +75,7 @@ export class UserService {
   }
 
   async getUserByEmail(email: string): Promise<User> {
-    const user = await this.userModel.findOne({ email }).populate('role');
+    const user = await this.userModel.findOne({ email }).populate('role').populate('bussiness');
     return user;
   }
 

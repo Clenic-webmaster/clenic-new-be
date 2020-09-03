@@ -18,37 +18,27 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import { UserService } from './user.service';
+import { JWTPayloadDto } from 'src/models/dto';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) { }
+  constructor(private _userService: UserService) { }
 
   @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
-  }
-
-  @Get('all')
-  async getAll(@Request() req) {
-    const users = await this.userService.getUsers();
-    return users;
-  }
-
-  @Delete('/:id')
-  async deleteUser(@Res() res, @Param('id') id) {
-    const user = await this.userService.deleteUser(id);
+  async getProfile(@Res() res, @Request() req) {
+    const jwtPayload: JWTPayloadDto = req.user;
+    const user = await this._userService.getUserById(jwtPayload.userId);
     if (!user) throw new NotFoundException('User does not exists');
     return res.status(HttpStatus.OK).json({
-      message: 'User Deleted',
       user,
     });
   }
 
   @Get('/:id')
   async getUser(@Res() res, @Param('id') id) {
-    const user = await this.userService.getUserById(id);
+    const user = await this._userService.getUserById(id);
     if (!user) throw new NotFoundException('User does not exists');
     return res.status(HttpStatus.OK).json({
       user,

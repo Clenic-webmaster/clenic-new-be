@@ -1,5 +1,5 @@
-export { LoginUserDto, UserDto, LogoutUserDto, RegisterUserAdminDto, UserBussinessInformationDto } from './UserDto';
-export { RoleDto } from './RoleDto';
-export { BussinessDto } from './BussinessDto';
-export { EquipmentDto } from './EquipmentDto';
-export { OrderDto } from './OrderDto';
+export { LoginUserDto, UserDto, JWTPayloadDto, LogoutUserDto, RegisterUserAdminDto, UserBussinessInformationDto, RegisterUserClenicDto } from './user.dto';
+export { RoleDto } from './role.dto';
+export { BussinessDto } from './bussiness.dto';
+export { EquipmentDto } from './equipment.dto';
+export { OrderDto } from './order.dto';

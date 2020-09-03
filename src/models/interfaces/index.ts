@@ -1,5 +1,5 @@
-export { User } from './User';
-export { Role } from './Role';
-export { Bussiness } from './Bussiness';
-export { Equipment } from './Equipment';
-export { Order } from './Order';
+export { User } from './user.interface';
+export { Role } from './role.interface';
+export { Bussiness } from './bussiness.interface';
+export { Equipment } from './equipment.interface';
+export { Order } from './order.interface';

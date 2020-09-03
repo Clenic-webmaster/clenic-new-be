@@ -1,11 +1,12 @@
 import { Document } from 'mongoose';
-import { Role } from './Role';
+import { Role } from './role.interface';
 import { IPosition, IUserPersonalInformation, IUserSession } from 'src/utils/types';
-import { Bussiness } from './Bussiness';
+import { Bussiness } from './bussiness.interface';
 
 export class User extends Document {
   readonly _id: string;
   readonly identifier?: string;
+  readonly companyIdentifier?: string;
   readonly email?: string;
   readonly password?: string;
   readonly position?: IPosition;

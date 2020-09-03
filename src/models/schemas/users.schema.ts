@@ -2,6 +2,7 @@ import { Schema } from 'mongoose';
 
 export const UserSchema = new Schema({
   identifier: { type: String, required: true },
+  companyIdentifier: { type: String },
   email: { type: String, default: '' },
   password: { type: String, required: true },
   position: {

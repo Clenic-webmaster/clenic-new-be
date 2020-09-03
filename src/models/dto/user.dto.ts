@@ -47,10 +47,24 @@ export class RegisterUserAdminDto {
   @IsNotEmpty() @ValidateNested() @Type(() => UserBussinessInformationDto) bussiness?: UserBussinessInformationDto;
 }
 
+export class RegisterUserClenicDto {
+  identifier?: string;
+  companyIdentifier?: string;
+  @IsEmail() @IsNotEmpty() email?: string;
+  @IsNotEmpty() @MinLength(5) @IsString() password?: string;
+  position: IPosition;
+  state?: "INACTIVO" | "VACACIONES" | "EN RUTA" | "DISPONIBLE";
+  sessions: [];
+  role?: string;
+  @IsNotEmpty() @ValidateNested() @Type(() => UserPersonalInformationDto) personalInformation?: UserPersonalInformationDto;
+  @IsNotEmpty() @ValidateNested() @Type(() => UserBussinessInformationDto) bussiness?: UserBussinessInformationDto;
+}
+
 export class UserDto {
 
   readonly _id?: string;
   readonly identifier?: string;
+  readonly companyIdentifier?: string;
   email?: string;
   password?: string;
   position?: IPosition;
@@ -60,5 +74,17 @@ export class UserDto {
   bussiness?: string;
   readonly role?: string;
 
+}
+
+export class JWTPayloadDto {
+  userId: string;
+  bussinessId?: string;
+  identifier?: string;
+  companyIdentifier?: string;
+  role: {
+    _id: string;
+    name: string;
+    active: boolean;
+  }
 }
 

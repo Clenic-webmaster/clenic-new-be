@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
-import { User } from './User';
-import { Equipment } from './Equipment';
-import { Order } from './Order';
+import { User } from './user.interface';
+import { Equipment } from './equipment.interface';
+import { Order } from './order.interface';
 
 export class Bussiness extends Document {
     readonly _id: string;
