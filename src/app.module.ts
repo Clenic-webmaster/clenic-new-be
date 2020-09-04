@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './api/user/user.module';
-import { MongooseModule } from '@nestjs/mongoose';
 import { database } from './utils/constants/database';
 import { RoleModule } from './api/role/role.module';
 import { BussinessModule } from './api/bussiness/bussiness.module';
@@ -11,14 +10,15 @@ import { OrderModule } from './api/order/order.module';
 import { EquipmentModule } from './api/equipment/equipment.module';
 import * as cors from 'cors';
 import * as morgan from 'morgan';
+import { MongoModule } from './mongo.module';
 
-const urlDb = database.urlProd + database.dev.db;
+const mongoURL = `${database.connection}${database.dev.auth}${database.dev.ip}${database.dev.db}${database.dev.options}`;
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
-    MongooseModule.forRoot(urlDb, { useNewUrlParser: true, useUnifiedTopology: true }),
+    MongoModule,
     RoleModule,
     BussinessModule,
     OrderModule,

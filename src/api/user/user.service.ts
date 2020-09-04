@@ -18,6 +18,30 @@ export class UserService {
     return session;
   }
 
+  async checkValidAdminCredentials(email: string, identifier: string, roleId: string): Promise<boolean> {
+    const users = await this.userModel.find({ email, identifier, role: roleId })
+    if (users.length > 0) {
+      return false
+    }
+    return true;
+  }
+
+  async checkValidLowUserCredentials(email: string, companyIdentifier: string): Promise<boolean> {
+    const users = await this.userModel.find({ email, companyIdentifier })
+    if (users.length > 0) {
+      throw ErrorHandler.throwCustomError('El email ya se encuentra en uso dentro de su empresa.')
+    }
+    return true;
+  }
+
+  async checkValidClenicIdentifier(identifier: string, companyIdentifier: string): Promise<boolean> {
+    const users = await this.userModel.find({ identifier, companyIdentifier })
+    if (users.length > 0) {
+      throw ErrorHandler.throwCustomError('El nombre de la Clenic ya se encuentra en uso dentro de su empresa.')
+    }
+    return true;
+  }
+
   async checkValidUserBussinessIdentifier(identifier: string, roleId: string): Promise<boolean> {
     const users = await this.userModel.find({ identifier, role: roleId })
     if (users.length > 0) {

@@ -167,6 +167,7 @@ export class AuthService {
         password: user.password,
         personalInformation: user.personalInformation,
         identifier: this.getIdentifier(user.bussiness.name),
+        companyIdentifier: this.getIdentifier(user.bussiness.name),
         role: roleAdmin._id,
         state: "DISPONIBLE",
       }
@@ -247,94 +248,93 @@ export class AuthService {
     }
 
     //VALIDACION DE IDENTIFICADOR Y EMAIL UNICOS DENTRO DE LAS CLENICS EN UNA EMPRESA DE MANTENIMIENTO
-    let validClenicData = await this._bussinessService.validClenicEmailAndIdentifierByBussines(user.email, this.getIdentifier(user.bussiness.name), jwtPayload.bussinessId)
+    /* let validClenicData = await this._bussinessService.validClenicEmailAndIdentifierByBussines(user.email, this.getIdentifier(user.bussiness.name), jwtPayload.bussinessId) */
 
-    if (validClenicData) {
-      //OBTENER LAS SESIONES DE LAS COLECCIONES PARA LA TRANSACCION
-      //EL MANEJO DE LAS TRANSACCIONES NOS PERMITEN REALIZAR OPERACIONES EN LA BASE DE DATOS
-      //Y REVERTIRLAS CUANDO UNA PARTE DEL FLUJO FALLA
-      let userSession = await this._userService.getUserModelSession()
-        .catch((error) => { throw ErrorHandler.throwDefaultInternalServerError(error) })
-      let bussinessSession = await this._bussinessService.getBussinessModelSession()
-        .catch((error) => { throw ErrorHandler.throwDefaultInternalServerError(error) })
+    //VALIDACIONES DE USUARIO
+    await this._userService.checkValidLowUserCredentials(user.email, jwtPayload.companyIdentifier);
+    await this._userService.checkValidClenicIdentifier(this.getIdentifier(user.bussiness.name), jwtPayload.companyIdentifier);
 
-      //INICIAR LAS TRANSACCIONES
-      userSession.startTransaction();
-      bussinessSession.startTransaction();
 
-      //CONSTRUCCION DE LA DATA PARA LA COLECCION USER
-      let storedUser: UserDto | User = {
-        email: user.email,
-        password: user.password,
-        personalInformation: user.personalInformation,
-        identifier: this.getIdentifier(user.bussiness.name),
-        companyIdentifier: jwtPayload.identifier,
-        role: roleClenic._id,
-        state: "DISPONIBLE",
-      }
+    //OBTENER LAS SESIONES DE LAS COLECCIONES PARA LA TRANSACCION
+    //EL MANEJO DE LAS TRANSACCIONES NOS PERMITEN REALIZAR OPERACIONES EN LA BASE DE DATOS
+    //Y REVERTIRLAS CUANDO UNA PARTE DEL FLUJO FALLA
+    let userSession = await this._userService.getUserModelSession()
+      .catch((error) => { throw ErrorHandler.throwDefaultInternalServerError(error) })
+    let bussinessSession = await this._bussinessService.getBussinessModelSession()
+      .catch((error) => { throw ErrorHandler.throwDefaultInternalServerError(error) })
 
-      //AGREGAR AL USUARIO A LA BASE DE DATOS (UNA VEZ FINALIZADA LA TRANSACCION)
-      storedUser = await this._userService.createUser(storedUser, userSession)
-        .catch(async (error: any) => {
-          //ABORTAR TODAS LAS TRANSACCIONES
-          await TransactionHandler.abortTransaction(userSession);
-          await TransactionHandler.abortTransaction(bussinessSession);
-          throw ErrorHandler.throwDefaultInternalServerError(error);
-        });
+    //INICIAR LAS TRANSACCIONES
+    userSession.startTransaction();
+    bussinessSession.startTransaction();
 
-      //CONSTRUCCION DE LA DATA PARA LA INFORMACION DE NEGOCIO
-      let storedBussiness: UserBussinessInformationDto | Bussiness = {
-        user: storedUser._id,
-        serviceEntity: jwtPayload.userId,
-        type: 'CLENIC',
-        name: user.bussiness.name,
-        address: user.bussiness.address,
-        engineers: [],
-        clenics: [],
-        orders: [],
-        equipments: []
-      }
+    //CONSTRUCCION DE LA DATA PARA LA COLECCION USER
+    let storedUser: UserDto | User = {
+      email: user.email,
+      password: user.password,
+      personalInformation: user.personalInformation,
+      identifier: this.getIdentifier(user.bussiness.name),
+      companyIdentifier: jwtPayload.identifier,
+      role: roleClenic._id,
+      state: "DISPONIBLE",
+    }
 
-      //AGREGAR LA INFORMACION DEL NEGOCIO A LA BASE DE DATOS
-      storedBussiness = await this._bussinessService.createBussiness(storedBussiness, bussinessSession)
-        .catch(async (error: any) => {
-          //ABORTAR TRANSACCIONES
-          await TransactionHandler.abortTransaction(userSession);
-          await TransactionHandler.abortTransaction(bussinessSession);
-          throw ErrorHandler.throwDefaultInternalServerError(error);
-        });
-
-      //ACTUALIZAR EL USUARIO CON EL ID DE LA INFORMACION DEL NEGOCIO
-      storedUser.bussiness = storedBussiness._id;
-
-      //ACTUALIZAR EL USUARIO A LA BASE DE DATOS
-      storedUser = await storedUser.save({ session: userSession }).catch(async (error: any) => {
+    //AGREGAR AL USUARIO A LA BASE DE DATOS (UNA VEZ FINALIZADA LA TRANSACCION)
+    storedUser = await this._userService.createUser(storedUser, userSession)
+      .catch(async (error: any) => {
+        //ABORTAR TODAS LAS TRANSACCIONES
         await TransactionHandler.abortTransaction(userSession);
         await TransactionHandler.abortTransaction(bussinessSession);
         throw ErrorHandler.throwDefaultInternalServerError(error);
       });
 
-      //AGREGAR LA CLENIC A LA LISTA DE CLENICS DE LA EMPRESA DE MANTENIMIENTO
-      bussinessCompany.clenics.push(storedBussiness)
-      bussinessCompany.save({ session: bussinessSession })
-        .catch(async (error) => {
-          await TransactionHandler.abortTransaction(userSession);
-          await TransactionHandler.abortTransaction(bussinessSession);
-          throw ErrorHandler.throwDefaultInternalServerError(error);
-        })
-
-      //REALIZAR LA TRANSACCION (INGRESAR A LA BASE DE DATOS TODAS LAS TRANSACCIONES REALIZADAS)
-      await TransactionHandler.commitTransaction(userSession);
-      await TransactionHandler.commitTransaction(bussinessSession);
-
-      return {
-        message: 'El registro de su Clenic ha sido exitoso.'
-      }
-
-    } else {
-      throw ErrorHandler.throwDefaultInternalServerError();
+    //CONSTRUCCION DE LA DATA PARA LA INFORMACION DE NEGOCIO
+    let storedBussiness: UserBussinessInformationDto | Bussiness = {
+      user: storedUser._id,
+      serviceEntity: jwtPayload.userId,
+      type: 'CLENIC',
+      name: user.bussiness.name,
+      address: user.bussiness.address,
+      engineers: [],
+      clenics: [],
+      orders: [],
+      equipments: []
     }
 
+    //AGREGAR LA INFORMACION DEL NEGOCIO A LA BASE DE DATOS
+    storedBussiness = await this._bussinessService.createBussiness(storedBussiness, bussinessSession)
+      .catch(async (error: any) => {
+        //ABORTAR TRANSACCIONES
+        await TransactionHandler.abortTransaction(userSession);
+        await TransactionHandler.abortTransaction(bussinessSession);
+        throw ErrorHandler.throwDefaultInternalServerError(error);
+      });
+
+    //ACTUALIZAR EL USUARIO CON EL ID DE LA INFORMACION DEL NEGOCIO
+    storedUser.bussiness = storedBussiness._id;
+
+    //ACTUALIZAR EL USUARIO A LA BASE DE DATOS
+    storedUser = await storedUser.save({ session: userSession }).catch(async (error: any) => {
+      await TransactionHandler.abortTransaction(userSession);
+      await TransactionHandler.abortTransaction(bussinessSession);
+      throw ErrorHandler.throwDefaultInternalServerError(error);
+    });
+
+    //AGREGAR LA CLENIC A LA LISTA DE CLENICS DE LA EMPRESA DE MANTENIMIENTO
+    bussinessCompany.clenics.push(storedBussiness)
+    bussinessCompany.save({ session: bussinessSession })
+      .catch(async (error) => {
+        await TransactionHandler.abortTransaction(userSession);
+        await TransactionHandler.abortTransaction(bussinessSession);
+        throw ErrorHandler.throwDefaultInternalServerError(error);
+      })
+
+    //REALIZAR LA TRANSACCION (INGRESAR A LA BASE DE DATOS TODAS LAS TRANSACCIONES REALIZADAS)
+    await TransactionHandler.commitTransaction(userSession);
+    await TransactionHandler.commitTransaction(bussinessSession);
+
+    return {
+      message: 'El registro de su Clenic ha sido exitoso.'
+    }
   }
 
   private getIdentifier(value?: string) {

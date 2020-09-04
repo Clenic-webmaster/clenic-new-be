@@ -36,17 +36,4 @@ export class BussinessService {
             throw ErrorHandler.throwNotFoundError('Bussiness');
         }
     }
-
-    async validClenicEmailAndIdentifierByBussines(email: string, identifier: string, bussinessId: string): Promise<boolean> {
-        const clenics = await this.getClenicsByBussinessId(bussinessId);
-        const matchClenicsByEmail = clenics.filter((clenic) => { return clenic.user.email == email })
-        const matchClenicsByIdentifier = clenics.filter((clenic) => { return clenic.user.identifier == identifier })
-        if (matchClenicsByEmail.length > 0) {
-            throw ErrorHandler.throwCustomError('Email already taken.', HttpStatus.BAD_REQUEST)
-        }
-        if (matchClenicsByIdentifier.length > 0) {
-            throw ErrorHandler.throwCustomError('Identifier already taken.', HttpStatus.BAD_REQUEST)
-        }
-        return true;
-    }
 }
