@@ -247,9 +247,6 @@ export class AuthService {
       throw ErrorHandler.throwCustomError('Su usuario no se encuentra permitido para realizar esta acción.', HttpStatus.UNAUTHORIZED);
     }
 
-    //VALIDACION DE IDENTIFICADOR Y EMAIL UNICOS DENTRO DE LAS CLENICS EN UNA EMPRESA DE MANTENIMIENTO
-    /* let validClenicData = await this._bussinessService.validClenicEmailAndIdentifierByBussines(user.email, this.getIdentifier(user.bussiness.name), jwtPayload.bussinessId) */
-
     //VALIDACIONES DE USUARIO
     await this._userService.checkValidLowUserCredentials(user.email, jwtPayload.companyIdentifier);
     await this._userService.checkValidClenicIdentifier(this.getIdentifier(user.bussiness.name), jwtPayload.companyIdentifier);
