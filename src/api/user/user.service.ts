@@ -29,7 +29,7 @@ export class UserService {
   async checkValidLowUserCredentials(email: string, companyIdentifier: string): Promise<boolean> {
     const users = await this.userModel.find({ email, companyIdentifier })
     if (users.length > 0) {
-      throw ErrorHandler.throwCustomError('El email ya se encuentra en uso dentro de su empresa.')
+      throw ErrorHandler.throwCustomError('El email ya se encuentra en uso dentro de su empresa.', HttpStatus.BAD_REQUEST)
     }
     return true;
   }
@@ -37,7 +37,7 @@ export class UserService {
   async checkValidClenicIdentifier(identifier: string, companyIdentifier: string): Promise<boolean> {
     const users = await this.userModel.find({ identifier, companyIdentifier })
     if (users.length > 0) {
-      throw ErrorHandler.throwCustomError('El nombre de la Clenic ya se encuentra en uso dentro de su empresa.')
+      throw ErrorHandler.throwCustomError('El nombre de la Clenic ya se encuentra en uso dentro de su empresa.', HttpStatus.BAD_REQUEST)
     }
     return true;
   }
