@@ -1,7 +1,7 @@
 import { Controller, UseGuards, Request, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { LoginUserDto, LogoutUserDto, RegisterUserAdminDto, RegisterUserClenicDto, JWTPayloadDto } from 'src/models/dto';
+import { LoginUserDto, LogoutUserDto, RegisterUserAdminDto, RegisterUserClenicDto, JWTPayloadDto, RegisterUserEngineerDto } from 'src/models/dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
@@ -17,6 +17,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logout(@Body() body: LogoutUserDto, @Request() req) {
+    const jwtPayload: JWTPayloadDto = req.user;
     return this._authService.logout(body.sessionToken, req.user.userId);
   }
 
@@ -35,7 +36,8 @@ export class AuthController {
   //TO-DO
   @UseGuards(JwtAuthGuard)
   @Post('register/engineer')
-  async registerEngineer(@Body() user: RegisterUserClenicDto) {
-    return this._authService.registerClenic(user, {} as JWTPayloadDto);
+  async registerEngineer(@Body() user: RegisterUserEngineerDto, @Request() req) {
+    const jwtPayload: JWTPayloadDto = req.user;
+    return this._authService.registerEngineer(user, jwtPayload);
   }
 }

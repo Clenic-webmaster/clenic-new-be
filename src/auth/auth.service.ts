@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { RoleService } from 'src/api/role/role.service';
 import { IUserSession } from 'src/utils/types';
-import { RegisterUserAdminDto, UserDto, UserBussinessInformationDto, RegisterUserClenicDto, JWTPayloadDto } from 'src/models/dto';
+import { RegisterUserAdminDto, UserDto, UserBussinessInformationDto, RegisterUserClenicDto, JWTPayloadDto, RegisterUserEngineerDto } from 'src/models/dto';
 import { TransactionHandler } from 'src/utils/transactions';
 import { User, Bussiness } from 'src/models/interfaces';
 import { ErrorHandler } from 'src/utils/errors';
@@ -333,7 +333,86 @@ export class AuthService {
     await TransactionHandler.commitTransaction(bussinessSession);
 
     return {
-      message: 'El registro de su Clenic ha sido exitoso.'
+      message: 'El registro de la Clenic ha sido exitoso.'
+    }
+  }
+
+  async registerEngineer(user: RegisterUserEngineerDto, jwtPayload: JWTPayloadDto) {
+
+    //OBTENER ROL ENGINEER
+    let roleEngineer = await this._roleService.getRoleEngineer()
+      .catch((error) => {
+        throw ErrorHandler.throwDefaultInternalServerError(error);
+      });
+
+    //OBTENER ROL ADMIN
+    let roleAdmin = await this._roleService.getRoleAdmin()
+      .catch((error) => {
+        throw ErrorHandler.throwDefaultInternalServerError(error);
+      });
+
+    //OBTENER LA INFORMACION DEL NEGOCIO PARA HACER LA POSTERIOR ACTUALIZACION DE LA LISTA DE ENGINEERS
+    let bussinessCompany = await this._bussinessService.getBussinessById(jwtPayload.bussinessId)
+      .catch((error) => {
+        throw ErrorHandler.throwDefaultInternalServerError(error);
+      });
+
+    //VALIDAR QUE EL ROL DEL USUARIO QUE REALIZA LA ACCION SEA UN ADMINISTRADOR
+    if (jwtPayload.role._id != roleAdmin._id) {
+      throw ErrorHandler.throwCustomError('Su usuario no se encuentra permitido para realizar esta acción.', HttpStatus.UNAUTHORIZED);
+    }
+
+    //VALIDACIONES DE USUARIO
+    await this._userService.checkValidLowUserCredentials(user.email, jwtPayload.companyIdentifier);
+
+    //OBTENER LAS SESIONES DE LAS COLECCIONES PARA LA TRANSACCION
+    //EL MANEJO DE LAS TRANSACCIONES NOS PERMITEN REALIZAR OPERACIONES EN LA BASE DE DATOS
+    //Y REVERTIRLAS CUANDO UNA PARTE DEL FLUJO FALLA
+    let userSession = await this._userService.getUserModelSession()
+      .catch((error) => { throw ErrorHandler.throwDefaultInternalServerError(error) })
+    let bussinessSession = await this._bussinessService.getBussinessModelSession()
+      .catch((error) => { throw ErrorHandler.throwDefaultInternalServerError(error) })
+
+    //INICIAR LAS TRANSACCIONES
+    userSession.startTransaction();
+    bussinessSession.startTransaction();
+
+    //CONSTRUCCION DE LA DATA PARA LA COLECCION USER
+    let storedUser: UserDto | User = {
+      email: user.email,
+      password: user.password,
+      personalInformation: user.personalInformation,
+      identifier: jwtPayload.companyIdentifier,
+      companyIdentifier: jwtPayload.companyIdentifier,
+      role: roleEngineer._id,
+      state: "DISPONIBLE",
+    }
+
+    //AGREGAR AL USUARIO A LA BASE DE DATOS (UNA VEZ FINALIZADA LA TRANSACCION)
+    storedUser = await this._userService.createUser(storedUser, userSession)
+      .catch(async (error: any) => {
+        //ABORTAR TODAS LAS TRANSACCIONES
+        await TransactionHandler.abortTransaction(userSession);
+        await TransactionHandler.abortTransaction(bussinessSession);
+        throw ErrorHandler.throwDefaultInternalServerError(error);
+      });
+
+
+    //AGREGAR AL INGENIERO A LA LISTA DE INGENIEROS DE LA EMPRESA DE MANTENIMIENTO
+    bussinessCompany.engineers.push(storedUser)
+    bussinessCompany.save({ session: bussinessSession })
+      .catch(async (error) => {
+        await TransactionHandler.abortTransaction(userSession);
+        await TransactionHandler.abortTransaction(bussinessSession);
+        throw ErrorHandler.throwDefaultInternalServerError(error);
+      })
+
+    //REALIZAR LA TRANSACCION (INGRESAR A LA BASE DE DATOS TODAS LAS TRANSACCIONES REALIZADAS)
+    await TransactionHandler.commitTransaction(userSession);
+    await TransactionHandler.commitTransaction(bussinessSession);
+
+    return {
+      message: 'El registro del Ingeniero ha sido exitoso.'
     }
   }
 

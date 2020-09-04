@@ -19,8 +19,8 @@ export class UserBussinessInformationDto {
   @IsIn([security.bussinessTypes.COMPANY, security.bussinessTypes.CLENIC]) type?: 'EMPRESA_MANTENIMIENTO' | 'CLENIC';
   @IsNotEmpty() @IsString() name?: string;
   @IsNotEmpty() @IsString() address?: string;
-  engineers: [];
-  clenics: [];
+  engineers?: [];
+  clenics?: [];
   orders: [];
   equipments: [];
 }
@@ -40,7 +40,7 @@ export class RegisterUserAdminDto {
   @IsEmail() @IsNotEmpty() email?: string;
   @IsNotEmpty() @MinLength(5) @IsString() password?: string;
   position: IPosition;
-  state?: "INACTIVO" | "VACACIONES" | "EN RUTA" | "DISPONIBLE";
+  state?: "INACTIVO" | "VACACIONES" | "EN RUTA" | "DISPONIBLE" | "BLOQUEADO";
   sessions: [];
   role?: string;
   @IsNotEmpty() @ValidateNested() @Type(() => UserPersonalInformationDto) personalInformation?: UserPersonalInformationDto;
@@ -53,11 +53,23 @@ export class RegisterUserClenicDto {
   @IsEmail() @IsNotEmpty() email?: string;
   @IsNotEmpty() @MinLength(5) @IsString() password?: string;
   position: IPosition;
-  state?: "INACTIVO" | "VACACIONES" | "EN RUTA" | "DISPONIBLE";
+  state?: "INACTIVO" | "VACACIONES" | "EN RUTA" | "DISPONIBLE" | "BLOQUEADO";
   sessions: [];
   role?: string;
   @IsNotEmpty() @ValidateNested() @Type(() => UserPersonalInformationDto) personalInformation?: UserPersonalInformationDto;
   @IsNotEmpty() @ValidateNested() @Type(() => UserBussinessInformationDto) bussiness?: UserBussinessInformationDto;
+}
+
+export class RegisterUserEngineerDto {
+  identifier?: string;
+  companyIdentifier?: string;
+  @IsEmail() @IsNotEmpty() email?: string;
+  @IsNotEmpty() @MinLength(5) @IsString() password?: string;
+  position: IPosition;
+  state?: "INACTIVO" | "VACACIONES" | "EN RUTA" | "DISPONIBLE" | "BLOQUEADO";
+  sessions: [];
+  role?: string;
+  @IsNotEmpty() @ValidateNested() @Type(() => UserPersonalInformationDto) personalInformation?: UserPersonalInformationDto;
 }
 
 export class UserDto {
@@ -68,7 +80,7 @@ export class UserDto {
   email?: string;
   password?: string;
   position?: IPosition;
-  state?: "INACTIVO" | "VACACIONES" | "EN RUTA" | "DISPONIBLE";
+  state?: "INACTIVO" | "VACACIONES" | "EN RUTA" | "DISPONIBLE" | "BLOQUEADO";
   personalInformation?: UserPersonalInformationDto;
   sessions?: [IUserSession];
   bussiness?: string;

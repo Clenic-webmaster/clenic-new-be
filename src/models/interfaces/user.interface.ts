@@ -10,7 +10,7 @@ export class User extends Document {
   readonly email?: string;
   readonly password?: string;
   readonly position?: IPosition;
-  readonly state?: "INACTIVO" | "VACACIONES" | "EN RUTA" | "DISPONIBLE";
+  readonly state?: "INACTIVO" | "VACACIONES" | "EN RUTA" | "DISPONIBLE" | "BLOQUEADO";
   readonly personalInformation?: IUserPersonalInformation;
   readonly sessions?: [IUserSession];
   bussiness?: Bussiness | string;
