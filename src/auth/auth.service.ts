@@ -4,7 +4,15 @@ import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { RoleService } from 'src/api/role/role.service';
 import { IUserSession } from 'src/utils/types';
-import { RegisterUserAdminDto, UserDto, UserBussinessInformationDto, RegisterUserClenicDto, JWTPayloadDto, RegisterUserEngineerDto, LoginUserDto } from 'src/models/dto';
+import {
+  RegisterUserAdminDto,
+  UserDto,
+  UserBussinessInformationDto,
+  RegisterUserClenicDto,
+  JWTPayloadDto,
+  RegisterUserEngineerDto,
+  LoginUserDto
+} from 'src/models/dto';
 import { TransactionHandler } from 'src/utils/transactions';
 import { User, Bussiness } from 'src/models/interfaces';
 import { ErrorHandler } from 'src/utils/errors';

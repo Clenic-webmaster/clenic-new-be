@@ -1,7 +1,7 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types, ClientSession, Connection } from 'mongoose';
-import { User, Role, Bussiness } from 'src/models/interfaces';
+import { Model, ClientSession } from 'mongoose';
+import { User } from 'src/models/interfaces';
 import { UserDto } from 'src/models/dto';
 import { hash } from 'bcrypt';
 import { ErrorHandler } from 'src/utils/errors';
@@ -61,11 +61,6 @@ export class UserService {
     return user;
   }
 
-  async getUserByEmail(email: string): Promise<User> {
-    const user = await this.userModel.findOne({ email }).populate('role').populate('bussiness');
-    return user;
-  }
-
   async getUserByEmailAndCompanyIdentifier(email: string, companyIdentifier: string): Promise<User> {
     const user = await this.userModel.findOne({ email, companyIdentifier }).populate('role').populate('bussiness');
     return user;
@@ -84,10 +79,5 @@ export class UserService {
       return await user.save({ session });
     }
     return await user.save();
-  }
-
-  async deleteUser(userId: string): Promise<User> {
-    const user = await this.userModel.findByIdAndDelete(userId);
-    return user;
   }
 }

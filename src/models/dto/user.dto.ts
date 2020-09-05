@@ -11,12 +11,12 @@ export class LoginUserDto {
 }
 
 export class LogoutUserDto {
-  readonly sessionToken: string;
+  @IsNotEmpty() @IsString() readonly sessionToken: string;
 }
 
 export class UserBussinessInformationDto {
-  /* @IsNotEmpty() @IsMongoId() */ user?: string;
-  /* @IsNotEmpty() @IsMongoId() */ serviceEntity?: string;
+  user?: string;
+  serviceEntity?: string;
   @IsIn([security.bussinessTypes.COMPANY, security.bussinessTypes.CLENIC]) type?: 'EMPRESA_MANTENIMIENTO' | 'CLENIC';
   @IsNotEmpty() @IsString() name?: string;
   @IsNotEmpty() @IsString() address?: string;

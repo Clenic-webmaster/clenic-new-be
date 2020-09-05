@@ -16,11 +16,6 @@ export class RoleService {
         return session;
     }
 
-    async getRoles(): Promise<Role[]> {
-        const roles = this.roleModel.find();
-        return roles;
-    }
-
     async getRoleAdmin(): Promise<Role> {
         const roles = await this.roleModel.find({ name: security.roles.ROLE_ADMIN });
         if (roles.length > 0) {
