@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { RoleService } from 'src/api/role/role.service';
 import { IUserSession } from 'src/utils/types';
-import { RegisterUserAdminDto, UserDto, UserBussinessInformationDto, RegisterUserClenicDto, JWTPayloadDto, RegisterUserEngineerDto } from 'src/models/dto';
+import { RegisterUserAdminDto, UserDto, UserBussinessInformationDto, RegisterUserClenicDto, JWTPayloadDto, RegisterUserEngineerDto, LoginUserDto } from 'src/models/dto';
 import { TransactionHandler } from 'src/utils/transactions';
 import { User, Bussiness } from 'src/models/interfaces';
 import { ErrorHandler } from 'src/utils/errors';
@@ -20,17 +20,16 @@ export class AuthService {
     private _jwtService: JwtService,
   ) { }
 
-  async validateUser(username: string, pass: string): Promise<any> { //USERNAME IS ONLY EMAIL
-    let myUser = await this._userService.getUserByEmail(username);
+  async validateUser(user: LoginUserDto): Promise<any> { //USERNAME IS ONLY EMAIL
+    let myUser = await this._userService.getUserByEmailAndCompanyIdentifier(user.username, user.companyIdentifier);
     if (myUser) {
-      if (await compare(pass, myUser.password)) {
-        const { ...result } = myUser;
-        return myUser;
+      if (await compare(user.password, myUser.password)) {
+        return await this.login(myUser);
       } else {
-        return null;
+        throw ErrorHandler.throwCustomError('Contraseña incorrecta, por favor intente de nuevo', HttpStatus.BAD_REQUEST);
       }
     } else {
-      return null;
+      throw ErrorHandler.throwCustomError('Email incorrecto, por favor intente de nuevo', HttpStatus.BAD_REQUEST);
     }
   }
 

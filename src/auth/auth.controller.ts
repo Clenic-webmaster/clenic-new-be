@@ -1,6 +1,5 @@
 import { Controller, UseGuards, Request, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guards/local-auth.guard';
 import { LoginUserDto, LogoutUserDto, RegisterUserAdminDto, RegisterUserClenicDto, JWTPayloadDto, RegisterUserEngineerDto } from 'src/models/dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
@@ -8,10 +7,9 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 export class AuthController {
   constructor(private _authService: AuthService) { }
 
-  @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Body() user: LoginUserDto, @Request() req) {
-    return this._authService.login(req.user);
+  async login(@Body() user: LoginUserDto) {
+    return this._authService.validateUser(user);
   }
 
   @UseGuards(JwtAuthGuard)

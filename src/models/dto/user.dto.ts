@@ -5,8 +5,9 @@ import { Type } from 'class-transformer';
 import { security } from 'src/utils/constants/security';
 
 export class LoginUserDto {
-  readonly username: string;
-  readonly password: string;
+  @IsNotEmpty() @IsString() readonly username: string;
+  @IsNotEmpty() @IsString() readonly password: string;
+  @IsNotEmpty() @IsString() readonly companyIdentifier: string;
 }
 
 export class LogoutUserDto {

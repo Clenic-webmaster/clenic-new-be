@@ -61,13 +61,13 @@ export class UserService {
     return user;
   }
 
-  async getUserByUsername(username: string): Promise<User> {
-    const user = await this.userModel.findOne({ username }).populate('role');
+  async getUserByEmail(email: string): Promise<User> {
+    const user = await this.userModel.findOne({ email }).populate('role').populate('bussiness');
     return user;
   }
 
-  async getUserByEmail(email: string): Promise<User> {
-    const user = await this.userModel.findOne({ email }).populate('role').populate('bussiness');
+  async getUserByEmailAndCompanyIdentifier(email: string, companyIdentifier: string): Promise<User> {
+    const user = await this.userModel.findOne({ email, companyIdentifier }).populate('role').populate('bussiness');
     return user;
   }
 
