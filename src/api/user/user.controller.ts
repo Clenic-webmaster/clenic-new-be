@@ -14,9 +14,12 @@ import {
 } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { JWTPayloadDto } from 'src/models/dto';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/utils/decorators';
+import { security } from 'src/utils/constants/security';
 
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('user')
 export class UserController {
   constructor(private _userService: UserService) { }
@@ -31,6 +34,7 @@ export class UserController {
     });
   }
 
+  @Roles(security.roles.ROLE_ADMIN)
   @Get('/:id')
   async getUser(@Res() res, @Param('id') id) {
     const user = await this._userService.getUserById(id);
