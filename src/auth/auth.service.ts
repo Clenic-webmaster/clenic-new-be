@@ -18,6 +18,7 @@ import { User, Bussiness } from 'src/models/interfaces';
 import { ErrorHandler } from 'src/utils/errors';
 import { BussinessService } from 'src/api/bussiness/bussiness.service';
 import { ClientSession } from 'mongoose';
+import { security } from 'src/utils/constants/security';
 
 @Injectable()
 export class AuthService {
@@ -46,7 +47,7 @@ export class AuthService {
     //PREPARAMOS EL PAYLOAD QUE TENDRA NUESTRO JWT
     const payload = {
       userId: user._id,
-      bussinessId: user.bussiness._id,
+      bussinessId: user.bussiness ? user.bussiness._id : null,
       identifier: user.identifier,
       companyIdentifier: user.companyIdentifier,
       role: user.role
@@ -59,7 +60,7 @@ export class AuthService {
       })
 
     if (relatedUser) {
-      let access_token = this._jwtService.sign(payload);
+      let access_token = this._jwtService.sign(payload, { algorithm: 'RS256' });
       //SI EL USUARIO ES ENCONTRADO, SE AÑADE UN OBJETO DE SESION A SUS SESIONES CON EL JWT OBTENIDO
       relatedUser.sessions.push({
         jwt: access_token,
