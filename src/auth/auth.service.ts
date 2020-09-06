@@ -238,22 +238,11 @@ export class AuthService {
         throw ErrorHandler.throwDefaultInternalServerError(error);
       });
 
-    //OBTENER ROL ADMIN
-    let roleAdmin = await this._roleService.getRoleAdmin()
-      .catch((error) => {
-        throw ErrorHandler.throwDefaultInternalServerError(error);
-      });
-
     //OBTENER LA INFORMACION DEL NEGOCIO PARA HACER LA POSTERIOR ACTUALIZACION DE LA LISTA DE CLENICS
     let bussinessCompany = await this._bussinessService.getBussinessById(jwtPayload.bussinessId)
       .catch((error) => {
         throw ErrorHandler.throwDefaultInternalServerError(error);
       });
-
-    //VALIDAR QUE EL ROL DEL USUARIO QUE REALIZA LA ACCION SEA UN ADMINISTRADOR
-    if (jwtPayload.role._id != roleAdmin._id) {
-      throw ErrorHandler.throwCustomError('Su usuario no se encuentra permitido para realizar esta acción.', HttpStatus.UNAUTHORIZED);
-    }
 
     //VALIDACIONES DE USUARIO
     await this._userService.checkValidLowUserCredentials(user.email, jwtPayload.companyIdentifier);
@@ -350,22 +339,11 @@ export class AuthService {
         throw ErrorHandler.throwDefaultInternalServerError(error);
       });
 
-    //OBTENER ROL ADMIN
-    let roleAdmin = await this._roleService.getRoleAdmin()
-      .catch((error) => {
-        throw ErrorHandler.throwDefaultInternalServerError(error);
-      });
-
     //OBTENER LA INFORMACION DEL NEGOCIO PARA HACER LA POSTERIOR ACTUALIZACION DE LA LISTA DE ENGINEERS
     let bussinessCompany = await this._bussinessService.getBussinessById(jwtPayload.bussinessId)
       .catch((error) => {
         throw ErrorHandler.throwDefaultInternalServerError(error);
       });
-
-    //VALIDAR QUE EL ROL DEL USUARIO QUE REALIZA LA ACCION SEA UN ADMINISTRADOR
-    if (jwtPayload.role._id != roleAdmin._id) {
-      throw ErrorHandler.throwCustomError('Su usuario no se encuentra permitido para realizar esta acción.', HttpStatus.UNAUTHORIZED);
-    }
 
     //VALIDACIONES DE USUARIO
     await this._userService.checkValidLowUserCredentials(user.email, jwtPayload.companyIdentifier);
