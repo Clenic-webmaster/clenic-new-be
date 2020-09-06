@@ -9,6 +9,9 @@ import {
   RegisterUserEngineerDto
 } from 'src/models/dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { Roles } from 'src/utils/decorators';
+import { security } from 'src/utils/constants/security';
+import { RolesGuard } from './guards/roles.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -31,15 +34,16 @@ export class AuthController {
     return this._authService.registerAdmin(user);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(security.roles.ROLE_ADMIN)
   @Post('register/clenic')
   async registerClenic(@Body() user: RegisterUserClenicDto, @Request() req) {
     const jwtPayload: JWTPayloadDto = req.user;
     return this._authService.registerClenic(user, jwtPayload);
   }
 
-  //TO-DO
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(security.roles.ROLE_ADMIN)
   @Post('register/engineer')
   async registerEngineer(@Body() user: RegisterUserEngineerDto, @Request() req) {
     const jwtPayload: JWTPayloadDto = req.user;
