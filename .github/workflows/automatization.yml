@@ -1,0 +1,21 @@
+name: automatization
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  Continuos-Integration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup nodeJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - name: Install Dependencies
+        run: npm install
+      - name: Test
+        run: npm run test
