@@ -1,9 +1,11 @@
+import moment = require('moment');
 import { Schema } from 'mongoose';
 
 export const EquipmentSchema = new Schema({
-    model: { type: String, required: true },
+    name: { type: String, required: true },
     brand: { type: String, required: true },
     serial: { type: String, required: true },
-    manufacturing: { type: Date, default: Date.now() },
-    images: { type: [String], validate: (v) => Array.isArray(v) && v.length > 0 }
+    manufacturing: { type: String, default: moment().format("YYYY-MM-DD HH:mm:ss") },
+    orders: [{ type: Schema.Types.ObjectId, ref: 'Order', required: true }],
+    images: [{ type: String, required: true }]
 }, { collection: 'equipments' });

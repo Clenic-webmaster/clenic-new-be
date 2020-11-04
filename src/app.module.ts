@@ -11,6 +11,7 @@ import { EquipmentModule } from './api/equipment/equipment.module';
 import * as cors from 'cors';
 import * as morgan from 'morgan';
 import { MongoModule } from './mongo.module';
+import { TreatmentImagesModule } from './treatment-images/treatment-images.module';
 
 const mongoURL = `${database.connection}${database.dev.auth}${database.dev.ip}${database.dev.db}${database.dev.options}`;
 
@@ -23,6 +24,7 @@ const mongoURL = `${database.connection}${database.dev.auth}${database.dev.ip}${
     BussinessModule,
     OrderModule,
     EquipmentModule,
+    TreatmentImagesModule
   ],
   controllers: [AppController],
   providers: [AppService],

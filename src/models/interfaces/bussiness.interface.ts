@@ -5,13 +5,13 @@ import { Order } from './order.interface';
 
 export class Bussiness extends Document {
     readonly _id: string;
-    readonly user?: User;
+    readonly user?: User | string;
     readonly serviceEntity?: User;
     readonly type?: "MANTENIMIENTO" | "CLENIC";
     readonly name?: string;
     readonly address?: string;
-    readonly engineers?: [User];
-    readonly clenics?: [Bussiness];
-    readonly orders?: [Order];
-    readonly equipments?: [Equipment];
+    readonly engineers?: User[] | string[];
+    readonly clenics?: Bussiness[] | string[];
+    readonly orders?: Order[] | string[];
+    readonly equipments?: Equipment[] | string[];
 }

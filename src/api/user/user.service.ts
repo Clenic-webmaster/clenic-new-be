@@ -2,7 +2,7 @@ import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ClientSession } from 'mongoose';
 import { User } from 'src/models/interfaces';
-import { UserDto } from 'src/models/dto';
+import { EngineerLocationDto, UserDto } from 'src/models/dto';
 import { hash } from 'bcrypt';
 import { ErrorHandler } from 'src/utils/errors';
 
@@ -61,6 +61,16 @@ export class UserService {
     return user;
   }
 
+  async getUserByCompanyIdentifier(companyIdentifier: string): Promise<User[]> {
+    const users = await this.userModel.find({ companyIdentifier });
+    return users;
+  }
+
+  async getUserByIdAndCompanyIdentifier(userId: string, companyIdentifier: string): Promise<User> {
+    const user = await this.userModel.findOne({ _id: userId, companyIdentifier });
+    return user;
+  }
+
   async getUserByEmailAndCompanyIdentifier(email: string, companyIdentifier: string): Promise<User> {
     const user = await this.userModel.findOne({ email, companyIdentifier }).populate('role').populate('bussiness');
     return user;
@@ -79,5 +89,50 @@ export class UserService {
       return await user.save({ session });
     }
     return await user.save();
+  }
+
+  async updateUserLocation(location: EngineerLocationDto, userId: string): Promise<any> {
+    const user = await this.getUserById(userId);
+    if (user) {
+      user.position.lat = location.lat;
+      user.position.long = location.long;
+      await user.save();
+      return {
+        message: "Posición actualizada con éxito"
+      }
+    } else {
+      throw ErrorHandler.throwNotFoundError("User");
+    }
+  }
+
+  async getEngineersLocation(companyIdentifier: string): Promise<any> {
+    const users = await this.getUserByCompanyIdentifier(companyIdentifier);
+    var positionList = [];
+    if (users.length) {
+      users.forEach((element) => {
+        if (!element.bussiness) { //SI NO TIENE BUSSINESS ES UN INGENIERO
+          positionList.push({
+            userId: element._id,
+            firstName: element.personalInformation.firstName,
+            lastName: element.personalInformation.lastName,
+            position: element.position
+          })
+        }
+      })
+      return positionList;
+    } else {
+      throw ErrorHandler.throwCustomError('No se encontraron ingenieros.', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async getEngineerLocationById(userId: string, companyIdentifier: string): Promise<any> {
+    const user = await this.getUserByIdAndCompanyIdentifier(userId, companyIdentifier);
+    if (user) {
+      return {
+        position: user.position
+      }
+    } else {
+      throw ErrorHandler.throwCustomError('No se encontró ingeniero.', HttpStatus.BAD_REQUEST);
+    }
   }
 }

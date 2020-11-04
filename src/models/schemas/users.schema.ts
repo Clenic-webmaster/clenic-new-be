@@ -1,3 +1,4 @@
+import moment = require('moment');
 import { Schema } from 'mongoose';
 
 export const UserSchema = new Schema({
@@ -15,8 +16,8 @@ export const UserSchema = new Schema({
     _id: false,
     firstName: { type: String, default: '' },
     lastName: { type: String, default: '' },
-    birthday: { type: Date, default: Date.now },
-    createdAt: { type: Date, default: Date.now },
+    birthday: { type: String, required: false, default: '' },
+    createdAt: { type: String, required: false, default: moment().format("YYYY-MM-DD HH:mm:ss") },
     imageProfile: { type: String, default: '' },
     active: { type: Boolean, default: true },
   },
@@ -26,7 +27,7 @@ export const UserSchema = new Schema({
       jwt: { type: String, required: true },
       identifierDevice: { type: String, required: true },
       location: { type: String, required: false, },
-      lastActive: { type: Date, required: false, default: Date.now() }
+      lastActive: { type: String, required: false, default: moment().format("YYYY-MM-DD HH:mm:ss") }
     }
   ],
   bussiness: { type: Schema.Types.ObjectId, ref: 'Bussiness' },

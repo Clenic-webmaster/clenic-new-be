@@ -1,7 +1,9 @@
+import moment = require('moment');
 import { Schema } from 'mongoose';
 
 export const OrderSchema = new Schema({
-    clenic: { type: Schema.Types.ObjectId, ref: 'Clenic', required: true },
+    correlative: { type: String, required: true },
+    clenic: { type: Schema.Types.ObjectId, ref: 'Bussiness', required: true },
     engineer: { type: Schema.Types.ObjectId, ref: 'User' },
     route: [
         {
@@ -12,7 +14,7 @@ export const OrderSchema = new Schema({
     ],
     equipment: { type: Schema.Types.ObjectId, ref: 'Equipment', required: true },
     description: { type: String, required: true },
-    serviceDate: { type: Date },
-    createDate: { type: Date, default: Date.now() },
+    serviceDate: { type: String },
+    createDate: { type: String, default: moment().format("YYYY-MM-DD HH:mm:ss") },
     state: { type: String, default: 'SOLICITADO', required: true },
 }, { collection: 'orders' });

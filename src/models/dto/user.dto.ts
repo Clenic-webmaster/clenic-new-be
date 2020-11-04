@@ -89,6 +89,11 @@ export class UserDto {
 
 }
 
+export class EngineerLocationDto {
+  @IsNotEmpty() lat: number;
+  @IsNotEmpty() long: number;
+}
+
 export class JWTPayloadDto {
   userId: string;
   bussinessId?: string;

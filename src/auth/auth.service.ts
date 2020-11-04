@@ -19,6 +19,7 @@ import { ErrorHandler } from 'src/utils/errors';
 import { BussinessService } from 'src/api/bussiness/bussiness.service';
 import { ClientSession } from 'mongoose';
 import { security } from 'src/utils/constants/security';
+import moment = require('moment');
 
 @Injectable()
 export class AuthService {
@@ -65,7 +66,7 @@ export class AuthService {
       relatedUser.sessions.push({
         jwt: access_token,
         identifierDevice: `DEFAULT_DEVICE_${access_token.substr(access_token.length - 5, access_token.length)}`,
-        lastActive: new Date(),
+        lastActive: moment().format("YYYY-MM-DD HH:mm:ss"),
         location: `DEFAULT_DEVICE_${access_token.substr(access_token.length - 5, access_token.length)}`
       })
       //GUARDAR EL USUARIO CON EL NUEVO OBJETO DE SESION
@@ -314,7 +315,7 @@ export class AuthService {
     });
 
     //AGREGAR LA CLENIC A LA LISTA DE CLENICS DE LA EMPRESA DE MANTENIMIENTO
-    bussinessCompany.clenics.push(storedBussiness)
+    bussinessCompany.clenics.push(storedBussiness._id as any)
     bussinessCompany.save({ session: bussinessSession })
       .catch(async (error) => {
         await TransactionHandler.abortTransaction(userSession);
@@ -382,7 +383,7 @@ export class AuthService {
 
 
     //AGREGAR AL INGENIERO A LA LISTA DE INGENIEROS DE LA EMPRESA DE MANTENIMIENTO
-    bussinessCompany.engineers.push(storedUser)
+    bussinessCompany.engineers.push(storedUser._id as any)
     bussinessCompany.save({ session: bussinessSession })
       .catch(async (error) => {
         await TransactionHandler.abortTransaction(userSession);
