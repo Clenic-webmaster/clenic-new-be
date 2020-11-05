@@ -87,7 +87,7 @@ jobs:
           details: Test Failed!
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Sleep for 70 seconds
-        uses: jakejarvis/wait-action@master
+        uses: jakejarvis/wait-action@v0.1.0
         with:
           time: '70s'
       - name: Monitoring
