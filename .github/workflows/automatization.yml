@@ -119,4 +119,4 @@ jobs:
           severity: error
           details: Test Failed!
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-    if: github.event_name == 'push' && github.ref == ‘refs/heads/master’
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
