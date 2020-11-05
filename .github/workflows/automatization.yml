@@ -87,9 +87,7 @@ jobs:
           details: Test Failed!
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Sleep for 70 seconds
-        uses: jakejarvis/wait-action@v0.1.0
-        with:
-          time: '70s'
+        run: sleep 70     
       - name: Monitoring
         run: pm2 logs --lines 60
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/dev'}}  
