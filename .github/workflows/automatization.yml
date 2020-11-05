@@ -19,3 +19,9 @@ jobs:
         run: npm install
       - name: Test
         run: npm run test
+      - name: Build Success
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: info
+          details: Build succeeded.
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
