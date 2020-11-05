@@ -16,6 +16,8 @@ jobs:
         with:
           node-version: "12.x"
       - name: Install Dependencies
-        run: npm install
+        run: npm installl"
+      - name: Build Project
+        run: npm run build --if-present
       - name: Test
         run: npm run test
