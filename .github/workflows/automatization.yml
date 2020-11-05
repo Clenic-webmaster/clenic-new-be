@@ -76,8 +76,6 @@ jobs:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Deployment
         run: pm2 restart clenic-be
-      - name: Monitoring
-        run: pm2 monit
       - name: Test Failure
         uses: rjstone/discord-webhook-notify@v1
         if: failure()
