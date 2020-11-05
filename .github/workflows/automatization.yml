@@ -49,6 +49,7 @@ jobs:
     needs: Continuous-Integration
     runs-on: self-hosted
     steps:
+      
       - name: Build Started
         uses: rjstone/discord-webhook-notify@v1
         with:
@@ -61,6 +62,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: "12.x"
+      - name: Flush 
+        run: pm2 flush
       - name: Install Dependencies
         run: npm install
       - name: Build Project
@@ -83,6 +86,8 @@ jobs:
           severity: error
           details: Test Failed!
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Monitoring
+        run: cat /root/.pm2/logs/clenic-be-out.log 
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/dev'}}  
 
   Continuous-Deployment:
