@@ -89,7 +89,7 @@ jobs:
       - name: Sleep for 70 seconds
         run: sleep 70     
       - name: Monitoring
-        run: pm2 logs --lines 60
+        run: cat /root/.pm2/logs/clenic-be-out.log
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/dev'}}  
 
   Continuous-Deployment:
