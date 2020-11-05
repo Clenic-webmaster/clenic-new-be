@@ -7,8 +7,14 @@ on:
 
 jobs:
   Continuos-Integration:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
+      - name: Build Started
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: warn
+          details: Build started.
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Setup nodeJS
@@ -21,3 +27,9 @@ jobs:
         run: npm run build --if-present
       - name: Test
         run: npm run test
+      - name: Build Success
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: info
+          details: Build succeeded.
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
