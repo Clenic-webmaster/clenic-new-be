@@ -7,6 +7,7 @@ import { TreatmentImagesModule } from 'src/treatment-images/treatment-images.mod
 import { UserModule } from '../user/user.module';
 
 @Module({
+  //Equipment.Module
   providers: [EquipmentService],
   exports: [EquipmentService],
   controllers: [EquipmentController],
