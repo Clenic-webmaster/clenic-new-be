@@ -12,6 +12,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     validationError: {
       target: false,
+      dismissDefaultMessages: true
+
     }
   }));
   await app.listen(3000);
