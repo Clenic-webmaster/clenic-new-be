@@ -1,4 +1,4 @@
-name: automatization
+name: pipeline
 
 on:
   push:
