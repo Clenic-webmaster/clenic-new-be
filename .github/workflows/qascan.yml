@@ -1,4 +1,4 @@
-name: BuildQA
+name: qabuild
 on:
   push:
     branches:
