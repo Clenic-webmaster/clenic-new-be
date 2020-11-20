@@ -4,6 +4,8 @@ import { RoleController } from './role.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { database } from 'src/utils/constants/database';
 
+// new endopoint added
+
 @Module({
     providers: [RoleService],
     exports: [RoleService],
