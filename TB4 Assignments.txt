@@ -1,0 +1,32 @@
+Participante	Tarea
+Gonzalo Escudero	
+  Especificar los jobs del pipeline: QA y Dev
+	User Stories del Sprint.
+	Los Engineering Tasks del Sprint.
+  Integración de SonarQube y Sonarlint al proyecto
+	Añadir Analytics a la landing page
+	PPT Presentation
+	Word TB4 
+  
+Adrian Crespo	
+  Question Backlog
+	Presentación de los resultados del experimento
+	Redacción de los datos recogidos 
+	Redacción de la comprobación de las hipótesis
+	Word TB4 
+  
+Miguel Ore	
+  Crear un flujo de trabajo visual que represente cómo funciona la pipeline
+	Realizar el Feature-set de cada experimento.
+	Hacer el impact map del to be
+	Performance entre el as-is y el to-be (cuadros comparativos)
+  
+Ernesto Sanchez	
+	Entrevista a un desarrollador de QA para la integración de SonarQube
+	Entrevista a un desarrollador para la comparativa de precios
+	Interpretación de las entrevistas
+  
+Emanuel Gonzalez	
+  Frontend Deployment 
+	Analytics del frontend
+	Redacción de las preguntas para las entrevistas
