@@ -44,7 +44,7 @@ export class RoleService {
             return roles[0];
         } else {
             throw new HttpException({
-                message: 'Role does not exist.'
+                message: 'Role does not exist.',
             }, HttpStatus.BAD_REQUEST);
         }
     }
