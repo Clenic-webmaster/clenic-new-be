@@ -21,8 +21,6 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/utils/decorators';
 import { security } from 'src/utils/constants/security';
 
-// added new endpoint
-
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('user')
