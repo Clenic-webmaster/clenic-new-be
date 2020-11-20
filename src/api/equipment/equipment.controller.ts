@@ -8,6 +8,8 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/utils/decorators';
 import { security } from 'src/utils/constants/security';
 
+// Code organization and endopoint addement
+
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('equipment')
 export class EquipmentController {
