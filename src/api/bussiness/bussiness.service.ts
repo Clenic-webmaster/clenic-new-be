@@ -40,7 +40,7 @@ export class BussinessService {
         var orders: [Order]
         bussiness.clenics.forEach((element) => {
             orders.concat(element.orders);
-        })
+        });
 
         return orders;
     }
