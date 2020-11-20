@@ -1,10 +1,9 @@
 name: qa-build
 on:
-  push:
-    branches:
-      - qa
   pull_request:
     types: [opened, synchronize, reopened]
+    branches:
+      - qa
 jobs:
   QA-Review:
     name: SonarCloud
