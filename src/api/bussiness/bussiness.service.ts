@@ -9,7 +9,7 @@ import { EquipmentService } from '../equipment/equipment.service';
 @Injectable()
 export class BussinessService {
     constructor(@InjectModel('Bussiness') private readonly _bussinessModel: Model<Bussiness>, private readonly _equipmentService: EquipmentService) { }
-
+    //BussinessService
     async getBussinessModelSession(): Promise<ClientSession> {
         const session = await this._bussinessModel.db.startSession()
         return session;
