@@ -1,14 +1,14 @@
 describe('POST: Crear equipo',()=>{
     //createEquipment
     test('Debe  retornar un string: El equipo médico ha sido creado con éxito', ()=>{
-    const objBussiness=null;//=bussinessService.getBussinessById("5f5060342e858d4afcedece5");
+    const objBussiness=null;
     var expected=objBussiness==null?false : true;
     const respuesta=false;
     expect(respuesta).toStrictEqual(expected);
     })
     
     test('Debe retornar un objeto HttpException', ()=>{
-        const objBussiness=null;//=bussinessService.getBussinessById("5f5060342e858d4afcedece5");
+        const objBussiness=null;
         var expected=objBussiness==null?false : true;
         const respuesta=false;
         expect(respuesta).toStrictEqual(expected);
@@ -25,7 +25,7 @@ describe('DELETE: Borrar un equipo',()=>{
     })
     
     test('Debe retornar un objeto HttpException', ()=>{
-        const objBussiness=null;//=bussinessService.getBussinessById("5f5060342e858d4afcedece5");
+        const objBussiness=null;
         var expected=objBussiness==null?false : true;
         const respuesta=false;
         expect(respuesta).toStrictEqual(expected);
