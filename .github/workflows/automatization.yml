@@ -90,7 +90,7 @@ jobs:
         run: sleep 100     
       - name: Monitoring
         run: cat /root/.pm2/logs/clenic-be-out.log
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/dev'}}  
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/qa'}}  
 
   Continuous-Deployment:
     needs: Continuous-Integration
