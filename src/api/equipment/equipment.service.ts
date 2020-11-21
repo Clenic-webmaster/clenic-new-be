@@ -11,6 +11,7 @@ import { TreatmentImagesService } from 'src/treatment-images/treatment-images.se
 
 @Injectable()
 export class EquipmentService {
+    //Equipment Service
     constructor(
         @InjectModel('Equipment') private readonly _equipmentModel: Model<Equipment>,
         private readonly _treatmentImagesService: TreatmentImagesService
