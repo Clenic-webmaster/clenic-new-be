@@ -8,6 +8,7 @@ import { UserModule } from '../user/user.module';
 
 @Module({
   //Equipment.Module
+  //Typescript
   providers: [EquipmentService],
   exports: [EquipmentService],
   controllers: [EquipmentController],
