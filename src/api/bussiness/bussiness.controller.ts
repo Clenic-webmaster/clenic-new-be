@@ -47,6 +47,20 @@ export class BussinessController {
         return await this._bussinessService.getEngineerListByBussinessId(jwtPayload.bussinessId, jwtPayload);
     }
 
+    @Roles(security.roles.ROLE_ADMIN)
+    @Get('admin/order/list')
+    async adminOrderList(@Req() req) {
+        const jwtPayload: JWTPayloadDto = req.user;
+        return await this._bussinessService.getFullAdminOrderList(jwtPayload.bussinessId, jwtPayload);
+    }
+
+    @Roles(security.roles.ROLE_CLENIC)
+    @Get('clenic/order/list')
+    async clenicOrderList(@Req() req) {
+        const jwtPayload: JWTPayloadDto = req.user;
+        return await this._bussinessService.getFullClenicOrderList(jwtPayload.bussinessId, jwtPayload);
+    }
+
     @Roles(security.roles.ROLE_CLENIC)
     @Post('createOrder')
     async createOrder(@Body() newOrder: OrderDto, @Req() req) {

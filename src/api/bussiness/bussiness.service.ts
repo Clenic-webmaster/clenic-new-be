@@ -15,6 +15,7 @@ export class BussinessService {
         return session;
     }
 
+
     async getBussinessById(bussinessId: string) {
         const bussiness = await this._bussinessModel.findById(bussinessId).populate('equipments').populate('engineers');
         return bussiness;
@@ -106,6 +107,51 @@ export class BussinessService {
             return bussiness.engineers;
         } else {
             throw ErrorHandler.throwCustomError("No tiene permisos para listar ingenieros", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    async getFullClenicOrderList(bussinessId: string, jwtPayload: JWTPayloadDto) {
+        var orders = [];
+        const bussiness: Bussiness = await this._bussinessModel.findById(bussinessId)
+            .populate({
+                path: 'orders',
+                populate: [
+                    { path: 'clenic' },
+                    { path: 'engineer' },
+                    { path: 'equipment' }
+                ]
+            }).catch((error) => { throw ErrorHandler.throwDefaultInternalServerError(error) });
+        if (bussiness.user == jwtPayload.userId) {
+            return bussiness.orders;
+        } else {
+            throw ErrorHandler.throwCustomError("No tiene permisos para listar ordenes", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    async getFullAdminOrderList(bussinessId: string, jwtPayload: JWTPayloadDto) {
+        var orders = [];
+        const bussiness: Bussiness = await this._bussinessModel.findById(bussinessId)
+            .populate({
+                path: 'clenics',
+                populate: [
+                    {
+                        path: 'orders',
+                        populate: [
+                            { path: 'clenic' },
+                            { path: 'engineer' },
+                            { path: 'equipment' }
+                        ]
+                    },
+                    { path: 'user' }
+                ]
+            }).catch((error) => { throw ErrorHandler.throwDefaultInternalServerError(error) });
+        if (bussiness.user == jwtPayload.userId) {
+            bussiness.clenics.forEach((value) => {
+                orders = [...orders, ...value.orders];
+            })
+            return orders;
+        } else {
+            throw ErrorHandler.throwCustomError("No tiene permisos para listar ordenes", HttpStatus.BAD_REQUEST);
         }
     }
 
