@@ -40,6 +40,13 @@ export class BussinessController {
         return await this._bussinessService.getEquipmentListByBussinessId(jwtPayload.bussinessId, jwtPayload);
     }
 
+    @Roles(security.roles.ROLE_ADMIN)
+    @Get('engineer/list')
+    async engineerList(@Req() req) {
+        const jwtPayload: JWTPayloadDto = req.user;
+        return await this._bussinessService.getEngineerListByBussinessId(jwtPayload.bussinessId, jwtPayload);
+    }
+
     @Roles(security.roles.ROLE_CLENIC)
     @Post('createOrder')
     async createOrder(@Body() newOrder: OrderDto, @Req() req) {

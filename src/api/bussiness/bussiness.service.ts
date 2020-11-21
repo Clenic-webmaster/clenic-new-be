@@ -16,7 +16,7 @@ export class BussinessService {
     }
 
     async getBussinessById(bussinessId: string) {
-        const bussiness = await this._bussinessModel.findById(bussinessId).populate('equipments');
+        const bussiness = await this._bussinessModel.findById(bussinessId).populate('equipments').populate('engineers');
         return bussiness;
     }
 
@@ -96,7 +96,16 @@ export class BussinessService {
             })
             return equipments;
         } else {
-            throw ErrorHandler.throwCustomError("No tiene permisos para agregar un nuevo equipo médico al negocio especificado", HttpStatus.BAD_REQUEST);
+            throw ErrorHandler.throwCustomError("No tiene permisos para listar equipos medicos", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    async getEngineerListByBussinessId(bussinessId: string, jwtPayload: JWTPayloadDto) {
+        const bussiness = await this.getBussinessById(jwtPayload.bussinessId);
+        if (bussiness.user == jwtPayload.userId) {
+            return bussiness.engineers;
+        } else {
+            throw ErrorHandler.throwCustomError("No tiene permisos para listar ingenieros", HttpStatus.BAD_REQUEST);
         }
     }
 
