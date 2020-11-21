@@ -5,7 +5,7 @@ import * as bodyParser from 'body-parser';
 import * as helmet from 'helmet';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   app.use(bodyParser.json({ limit: '120mb' }));
   app.use(bodyParser.urlencoded({ limit: '120mb', extended: true }));
   app.use(helmet());
