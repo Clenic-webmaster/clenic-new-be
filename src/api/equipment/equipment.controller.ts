@@ -12,6 +12,7 @@ import { security } from 'src/utils/constants/security';
 @Controller('equipment')
 export class EquipmentController {
     //Equipment Controller
+    //TypeScript
     constructor(private readonly _equipmentService: EquipmentService) { }
 
     @Get('/list')
