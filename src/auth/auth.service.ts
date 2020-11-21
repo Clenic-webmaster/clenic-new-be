@@ -54,32 +54,24 @@ export class AuthService {
       role: user.role
     };
 
-    //OBTENEMOS EL USUARIO QUE DESEA INICIAR SESION
-    var relatedUser = await this._userService.getUserById(user._id)
+    let access_token = this._jwtService.sign(payload, { algorithm: 'RS256' });
+    //SI EL USUARIO ES ENCONTRADO, SE AÑADE UN OBJETO DE SESION A SUS SESIONES CON EL JWT OBTENIDO
+    user.sessions.push({
+      jwt: access_token,
+      identifierDevice: `DEFAULT_DEVICE_${access_token.substr(access_token.length - 5, access_token.length)}`,
+      lastActive: moment().format("YYYY-MM-DD HH:mm:ss"),
+      location: `DEFAULT_DEVICE_${access_token.substr(access_token.length - 5, access_token.length)}`
+    })
+    //GUARDAR EL USUARIO CON EL NUEVO OBJETO DE SESION
+    await user.save()
       .catch((error) => {
         throw ErrorHandler.throwDefaultInternalServerError(error);
       })
 
-    if (relatedUser) {
-      let access_token = this._jwtService.sign(payload, { algorithm: 'RS256' });
-      //SI EL USUARIO ES ENCONTRADO, SE AÑADE UN OBJETO DE SESION A SUS SESIONES CON EL JWT OBTENIDO
-      relatedUser.sessions.push({
-        jwt: access_token,
-        identifierDevice: `DEFAULT_DEVICE_${access_token.substr(access_token.length - 5, access_token.length)}`,
-        lastActive: moment().format("YYYY-MM-DD HH:mm:ss"),
-        location: `DEFAULT_DEVICE_${access_token.substr(access_token.length - 5, access_token.length)}`
-      })
-      //GUARDAR EL USUARIO CON EL NUEVO OBJETO DE SESION
-      await relatedUser.save()
-        .catch((error) => {
-          throw ErrorHandler.throwDefaultInternalServerError(error);
-        })
-
-      return {
-        access_token: access_token,
-        user: relatedUser,
-      };
-    }
+    return {
+      access_token: access_token,
+      user: user,
+    };
   }
 
   async logout(sessionToken: any, userId: string) {
