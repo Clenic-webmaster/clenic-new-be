@@ -14,7 +14,7 @@ describe('POST: Crear equipo',()=>{
         expect(respuesta).toStrictEqual(expected);
     })
 })
-// finish login in the frontend
+
 describe('DELETE: Borrar un equipo',()=>{
     //deleteEquipment
     test('Debe  retornar un string: El equipo médico ha sido creado con éxito', ()=>{
