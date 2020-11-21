@@ -53,7 +53,7 @@ describe('GET: Obtener localizacion de Ingeniero mediante su Id',()=>{
 describe('GET: Obtener las localizaciones de los Ingenieros mediante el Id de una compañia',()=>{
     //getProfile
     test('Debe retornar un arreglo de objetos: userId, firstName, lastName, position', ()=>{
-    const objBussiness=null;//=bussinessService.getBussinessById("5f5060342e858d4afcedece5");
+    const objBussiness=null;
     var expected=objBussiness==null?false : true;
     const respuesta=false;
     expect(respuesta).toStrictEqual(expected);
