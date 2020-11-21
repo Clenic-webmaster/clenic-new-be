@@ -314,6 +314,7 @@ export class AuthService {
       throw ErrorHandler.throwDefaultInternalServerError(error);
     });
 
+    //MANEJO DE TRANSACCIONES
     //AGREGAR LA CLENIC A LA LISTA DE CLENICS DE LA EMPRESA DE MANTENIMIENTO
     bussinessCompany.clenics.push(storedBussiness._id as any)
     bussinessCompany.save({ session: bussinessSession })
