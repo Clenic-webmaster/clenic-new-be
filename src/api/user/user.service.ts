@@ -31,9 +31,9 @@ export class UserService {
     const users = await this.userModel.find({ email, companyIdentifier })
     if (users.length > 0) {
       throw new HttpException({
-        message: 'An error has occurred, please contact your administrator.'
-    }, HttpStatus.INTERNAL_SERVER_ERROR);
-      //throw ErrorHandler.throwCustomError('El email ya se encuentra en uso dentro de su empresa.', HttpStatus.BAD_REQUEST)
+        message: 'El email ya se encuentra en uso dentro de su empresa.',
+        statusCode: HttpStatus.BAD_REQUEST
+      }, HttpStatus.BAD_REQUEST);
     }
     return true;
   }
@@ -42,9 +42,9 @@ export class UserService {
     const users = await this.userModel.find({ identifier, companyIdentifier })
     if (users.length > 0) {
       throw new HttpException({
-        message: 'An error has occurred, please contact your administrator.'
-    }, HttpStatus.INTERNAL_SERVER_ERROR);
-      //throw ErrorHandler.throwCustomError('El nombre de la Clenic ya se encuentra en uso dentro de su empresa.', HttpStatus.BAD_REQUEST)
+        message: 'El nombre de la Clenic ya se encuentra en uso dentro de su empresa.',
+        statusCode: HttpStatus.BAD_REQUEST
+      }, HttpStatus.BAD_REQUEST);
     }
     return true;
   }
@@ -110,7 +110,7 @@ export class UserService {
     } else {
       throw new HttpException({
         message: 'An error has occurred, please contact your administrator.'
-    }, HttpStatus.INTERNAL_SERVER_ERROR);
+      }, HttpStatus.INTERNAL_SERVER_ERROR);
       //throw ErrorHandler.throwNotFoundError("User");
     }
   }
@@ -133,7 +133,7 @@ export class UserService {
     } else {
       throw new HttpException({
         message: 'An error has occurred, please contact your administrator.'
-    }, HttpStatus.INTERNAL_SERVER_ERROR);
+      }, HttpStatus.INTERNAL_SERVER_ERROR);
       //throw ErrorHandler.throwCustomError('No se encontraron ingenieros.', HttpStatus.BAD_REQUEST);
     }
   }
@@ -147,7 +147,7 @@ export class UserService {
     } else {
       throw new HttpException({
         message: 'An error has occurred, please contact your administrator.'
-    }, HttpStatus.INTERNAL_SERVER_ERROR);
+      }, HttpStatus.INTERNAL_SERVER_ERROR);
       //throw ErrorHandler.throwCustomError('No se encontró ingeniero.', HttpStatus.BAD_REQUEST);
     }
   }
