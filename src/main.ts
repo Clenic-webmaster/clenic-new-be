@@ -14,7 +14,7 @@ async function bootstrap() {
     origin: function (origin, callback) {
       callback(null, true)
     },
-    allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
+    allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe, Authorization',
     methods: "GET,PUT,POST,DELETE,UPDATE,OPTIONS",
     credentials: true,
   });
