@@ -11,7 +11,7 @@ const s3 = new S3({
 
 @Injectable()
 export class TreatmentImagesService {
-
+	//Final Implementation
     async uploadImage(file: any, fullFileName: string) {
         let validMimeType = storage.VALID_MIME_TYPES.filter((value) => { return value == file.mimetype });
         if (validMimeType.length > 0) {
@@ -41,7 +41,7 @@ export class TreatmentImagesService {
             throw ErrorHandler.throwCustomError('Formato de imagen inválido', HttpStatus.BAD_REQUEST);
         }
     }
-
+	//Solved with unfix method
     async deleteImage(fullFileName: string) {
         s3.deleteObject({
             Bucket: storage.STORAGE_BUCKET_NAME,
