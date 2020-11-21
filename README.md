@@ -9,15 +9,15 @@
   
   <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
     <p align="center">
-    [![pipeline Actions Status](https://github.com/Clenic-webmaster/clenic-new-be/workflows/pipeline/badge.svg)](https://github.com/Clenic-webmaster/clenic-new-be/actions)
-  [![qa-build Actions Status](https://github.com/Clenic-webmaster/clenic-new-be/workflows/qa-build/badge.svg)](https://github.com/Clenic-webmaster/clenic-new-be/actions)
-  
+
 
 <a href="https://sonarcloud.io/dashboard?id=ScueroInc_Clenic-Backend"><img src="https://sonarcloud.io/api/project_badges/measure?project=Clenic-webmaster_clenic-new-be&metric=alert_status" alt="Package License" /></a>
   <a href="https://sonarcloud.io/dashboard?id=ScueroInc_Clenic-Backend"><img src="https://sonarcloud.io/api/project_badges/measure?project=Clenic-webmaster_clenic-new-be&metric=bugs" alt="Package License" /></a>
 <a href="https://sonarcloud.io/dashboard?id=ScueroInc_Clenic-Backend"><img src="https://sonarcloud.io/api/project_badges/measure?project=Clenic-webmaster_clenic-new-be&metric=security_rating" alt="Package License" /></a>
-<a href="https://sonarcloud.io/dashboard?id=ScueroInc_Clenic-Backend"><img src=" https://sonarcloud.io/api/project_badges/measure?project=Clenic-webmaster_clenic-new-be&metric=sqale_rating" alt="Package License" /></a>
-<a href="https://sonarcloud.io/dashboard?id=ScueroInc_Clenic-Backend"><img src=" https://sonarcloud.io/api/project_badges/measure?project=Clenic-webmaster_clenic-new-be&metric=vulnerabilities" alt="Package License" /></a>
+<a href="https://sonarcloud.io/dashboard?id=ScueroInc_Clenic-Backend"><img src="https://sonarcloud.io/api/project_badges/measure?project=Clenic-webmaster_clenic-new-be&metric=sqale_rating" alt="Package License" /></a>
+<a href="https://sonarcloud.io/dashboard?id=ScueroInc_Clenic-Backend"><img src="https://sonarcloud.io/api/project_badges/measure?project=Clenic-webmaster_clenic-new-be&metric=vulnerabilities" alt="Package License" /></a>
+[![pipeline Actions Status](https://github.com/Clenic-webmaster/clenic-new-be/workflows/pipeline/badge.svg)](https://github.com/Clenic-webmaster/clenic-new-be/actions)
+[![qa-build Actions Status](https://github.com/Clenic-webmaster/clenic-new-be/workflows/qa-build/badge.svg)](https://github.com/Clenic-webmaster/clenic-new-be/actions)
 <a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
 <a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
             
