@@ -13,11 +13,11 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Build Started
-        uses: rjstone/discord-webhook-notify
+        uses: rjstone/discord-webhook-notify@v1
         with:
           severity: warn
           details: Build started.
-          webhookUrl: ${{ secrets.ISCORD_WEBHOOK }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Setup nodeJS
