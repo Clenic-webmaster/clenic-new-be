@@ -1,32 +1,33 @@
-Participante	Tarea
+﻿Participante	Tarea
 Gonzalo Escudero	
-  Especificar los jobs del pipeline: QA y Dev
-	User Stories del Sprint.
-	Los Engineering Tasks del Sprint.
-  Integración de SonarQube y Sonarlint al proyecto
-	Añadir Analytics a la landing page
-	PPT Presentation
-	Word TB4 
+  	Especificar los jobs del pipeline: QA y Dev					Integrado		
+	User Stories del Sprint.							Integrado	
+	Los Engineering Tasks del Sprint.						Integrado
+  	Integración de SonarQube y Sonarlint al proyecto				Integrado
+	Añadir Analytics a la landing page						Integrado
+	PPT Presentation		
+	Word TB4 									Integrado
   
 Adrian Crespo	
-  Question Backlog
-	Presentación de los resultados del experimento
-	Redacción de los datos recogidos 
-	Redacción de la comprobación de las hipótesis
+  	Question Backlog								Integrado
+	Presentación de los resultados del experimento					Integrado
+	Redacción de los datos recogidos 						Integrado
+	Redacción de la comprobación de las hipótesis					Integrado
 	Word TB4 
   
 Miguel Ore	
-  Crear un flujo de trabajo visual que represente cómo funciona la pipeline
-	Realizar el Feature-set de cada experimento.
-	Hacer el impact map del to be
-	Performance entre el as-is y el to-be (cuadros comparativos)
+  	Crear un flujo de trabajo visual que represente cómo funciona la pipeline	Integrado
+	Realizar el Feature-set de cada experimento.					Integrado
+	Hacer el impact map del to be							Integrado
+	Performance entre el as-is y el to-be (cuadros comparativos)			Integrado
   
 Ernesto Sanchez	
-	Entrevista a un desarrollador de QA para la integración de SonarQube
-	Entrevista a un desarrollador para la comparativa de precios
-	Interpretación de las entrevistas
+	Entrevista a un desarrollador de QA para la integración de SonarQube		Integrado
+	Entrevista a un desarrollador para la comparativa de precios			Integrado
+	Interpretación de las entrevistas						Integrado
   
 Emanuel Gonzalez	
-  Frontend Deployment 
-	Analytics del frontend
-	Redacción de las preguntas para las entrevistas
+  	Frontend Deployment 								Integrado
+	Analytics del frontend								Integrado
+	Redacción de las preguntas para las entrevistas					Integrado
+		
