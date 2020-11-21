@@ -31,7 +31,7 @@ export class UserController {
   async getProfile(@Res() res, @Request() req) {
     const jwtPayload: JWTPayloadDto = req.user;
     const user = await this._userService.getUserById(jwtPayload.userId);
-    if (!user) throw new NotFoundException('User does not exists');
+    if (!user) throw new NotFoundException('Usuario no existe');
     return res.status(HttpStatus.OK).json({
       user,
     });
