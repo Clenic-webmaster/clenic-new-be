@@ -35,7 +35,7 @@ export class BussinessService {
                     },
                     { path: 'user' }
                 ]
-            }).catch((error) => { throw ErrorHandler.throwDefaultInternalServerError(error) })
+            }).catch((error) => { throw ErrorHandler.throwDefaultInternalServerError(error) });
 
         var orders: [Order]
         bussiness.clenics.forEach((element) => {
