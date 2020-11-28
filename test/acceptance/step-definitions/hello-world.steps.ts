@@ -1,9 +1,9 @@
 import { binding, given, then, when} from 'cucumber-tsflow';
 import { assert } from 'chai';
-
+import {COrder} from "../classes/order.class"
 @binding()
 export class BankAccountSteps {
-  private accountBalance: number = 0;
+  private accountBalance: number=0;//COrder  = new COrder();
 
   @given(/el servicio ha sido completado y aprobado por el encargado/)
   public givenAnAccountWithStartingBalance() {
