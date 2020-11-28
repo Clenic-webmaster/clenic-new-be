@@ -5,7 +5,7 @@ import { assignEngineerToOrder, getListOrders } from "../testHelper/testHelper";
 describe('Asignar ingeniero a orden',()=>{
 
   test('Debe retornar un objeto Order si el ingeniero fue asignado a la orden correctamente', async ()=>{
-  const esperado=await assignEngineerToOrder("3423","2334");  //orden,ingeniero
+  const esperado=await assignEngineerToOrder("3423","2334");  //ingeniero,orden
   const result:Order={ 
     idOrder:"2334",
     idClenic:"77894",
