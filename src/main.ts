@@ -31,7 +31,7 @@ async function bootstrap() {
     .addTag('REST FULL API')
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document); //PIPELINE TEST
   await app.listen(3000);
 }
 bootstrap();
