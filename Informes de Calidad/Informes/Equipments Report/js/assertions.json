@@ -1,0 +1,10 @@
+{
+  "simulation": "computerdatabase.GetEquipmentSimulation",
+  "simulationId": "getequipmentsimulation",
+  "start": 1606567601313,
+  "description": "0",
+  "scenarios": ["Get Equipments"],
+  "assertions": [
+
+  ]
+}
