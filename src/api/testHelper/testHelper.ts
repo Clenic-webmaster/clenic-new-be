@@ -6,6 +6,8 @@ export class Order{
   idEngineer?: string;  
 }
 
+
+
 export function assignEngineerToOrder(ing:string, orden:string): Order {  
   if (ing=="3423" && orden=="2334") {
     const objOrder:Order={ 
@@ -19,6 +21,10 @@ export function assignEngineerToOrder(ing:string, orden:string): Order {
 }
 
 export function getListOrders(): Order[] {  
+  let miArray:Order[]=[];
+  return miArray;
+}
+export function service_getListOrders(): Order[] {  
   let miArray:Order[]=[];
   return miArray;
 }
