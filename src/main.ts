@@ -24,6 +24,7 @@ async function bootstrap() {
     }
   }));
   const options = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('API REST FULL DOCUMENTATION')
     .setDescription('API DOCUMENTATION FOR CLENIC BACKEND')
     .setVersion('1.0')
@@ -31,6 +32,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();
