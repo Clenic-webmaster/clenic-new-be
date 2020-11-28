@@ -17,9 +17,10 @@
         "test:watch": "jest --watch",
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-        "test:e2e": "jest --config ./test/jest-e2e.json"
+        "test:e2e": "cucumber-js -p default"
     },
     "dependencies": {
+        "@cucumber/cucumber": "^7.0.0-rc.0",
         "@nestjs/common": "^6.7.2",
         "@nestjs/config": "^0.5.0",
         "@nestjs/core": "^6.7.2",
@@ -34,9 +35,13 @@
         "aws-sdk": "^2.784.0",
         "bcrypt": "^4.0.1",
         "body-parser": "^1.19.0",
+        "chai": "^4.2.0",
         "class-transformer": "^0.3.1",
         "class-validator": "^0.12.2",
         "cors": "^2.8.5",
+        "cucumber": "^5.1.0",
+        "cucumber-pretty": "^1.5.2",
+        "cucumber-tsflow": "^3.2.0",
         "dot-object": "^2.1.4",
         "helmet": "^4.1.0",
         "moment": "^2.29.1",
@@ -44,6 +49,7 @@
         "morgan": "^1.10.0",
         "multer": "^1.4.2",
         "multer-s3": "^2.9.0",
+        "nestjs-bdd": "^0.2.0",
         "passport": "^0.4.1",
         "passport-jwt": "^4.0.0",
         "passport-local": "^1.0.0",
@@ -54,6 +60,8 @@
         "uuidv1": "^1.6.14"
     },
     "devDependencies": {
+        "chai": "*",
+        "mocha": "*",
         "@nestjs/cli": "^6.9.0",
         "@nestjs/schematics": "^6.7.0",
         "@nestjs/testing": "^6.7.1",
@@ -65,6 +73,7 @@
         "@types/passport-local": "^1.0.33",
         "@types/socket.io": "^2.1.11",
         "@types/supertest": "^2.0.8",
+        "cucumber": "^7.0.0-rc.0",
         "jest": "^24.9.0",
         "prettier": "^1.18.2",
         "supertest": "^4.0.2",
@@ -76,14 +85,17 @@
         "typescript": "^3.6.3"
     },
     "jest": {
-        "verbose": true,
-        "preset": "ts-jest",
-        "testEnvironment": "node",
-        "collectCoverage": true,
-        "coveragePathIgnorePatterns": [
-            "/node_modules",
-            "/test/",
-            "/dist/"
-        ]
+        "moduleFileExtensions": [
+            "js",
+            "json",
+            "ts"
+        ],
+        "rootDir": "src",
+        "testRegex": ".spec.ts$",
+        "transform": {
+            "^.+\\.(t|j)s$": "ts-jest"
+        },
+        "coverageDirectory": "../coverage",
+        "testEnvironment": "node"
     }
 }
