@@ -16,12 +16,12 @@ import { RolesGuard } from './guards/roles.guard';
 @Controller('auth')
 export class AuthController {
   constructor(private _authService: AuthService) { }
-
+//login endpoint validation
   @Post('login')
   async login(@Body() user: LoginUserDto) {
     return this._authService.validateUser(user);
   }
-
+//logout endpoint validation
   @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logout(@Body() body: LogoutUserDto, @Request() req) {

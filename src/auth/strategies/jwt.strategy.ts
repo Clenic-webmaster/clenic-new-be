@@ -12,7 +12,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       ignoreExpiration: true,
       secretOrKey: security.secret,
       passReqToCallback: true,
-      algorithms: ['RS256']
+      algorithms: ['RS256'],
     });
   }
 
@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       if (await this._authService.checkJWtInSession(jwt, userId)) {
         return payload;
       } else {
-        throw new UnauthorizedException('The token sended is not valid')
+        throw new UnauthorizedException('Token no válido');
       }
     } else {
       throw new UnauthorizedException()

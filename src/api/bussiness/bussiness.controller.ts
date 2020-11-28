@@ -12,6 +12,7 @@ import { EquipmentService } from '../equipment/equipment.service';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('bussiness')
 export class BussinessController {
+    //Business Controller
     constructor(
         private readonly _bussinessService: BussinessService,
         private readonly _orderService: OrderService,
@@ -37,6 +38,27 @@ export class BussinessController {
     async equipmentList(@Req() req) {
         const jwtPayload: JWTPayloadDto = req.user;
         return await this._bussinessService.getEquipmentListByBussinessId(jwtPayload.bussinessId, jwtPayload);
+    }
+
+    @Roles(security.roles.ROLE_ADMIN)
+    @Get('engineer/list')
+    async engineerList(@Req() req) {
+        const jwtPayload: JWTPayloadDto = req.user;
+        return await this._bussinessService.getEngineerListByBussinessId(jwtPayload.bussinessId, jwtPayload);
+    }
+
+    @Roles(security.roles.ROLE_ADMIN)
+    @Get('admin/order/list')
+    async adminOrderList(@Req() req) {
+        const jwtPayload: JWTPayloadDto = req.user;
+        return await this._bussinessService.getFullAdminOrderList(jwtPayload.bussinessId, jwtPayload);
+    }
+
+    @Roles(security.roles.ROLE_CLENIC)
+    @Get('clenic/order/list')
+    async clenicOrderList(@Req() req) {
+        const jwtPayload: JWTPayloadDto = req.user;
+        return await this._bussinessService.getFullClenicOrderList(jwtPayload.bussinessId, jwtPayload);
     }
 
     @Roles(security.roles.ROLE_CLENIC)

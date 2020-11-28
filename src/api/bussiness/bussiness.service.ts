@@ -9,14 +9,15 @@ import { EquipmentService } from '../equipment/equipment.service';
 @Injectable()
 export class BussinessService {
     constructor(@InjectModel('Bussiness') private readonly _bussinessModel: Model<Bussiness>, private readonly _equipmentService: EquipmentService) { }
-
+    //BussinessService
     async getBussinessModelSession(): Promise<ClientSession> {
         const session = await this._bussinessModel.db.startSession()
         return session;
     }
 
+
     async getBussinessById(bussinessId: string) {
-        const bussiness = await this._bussinessModel.findById(bussinessId).populate('equipments');
+        const bussiness = await this._bussinessModel.findById(bussinessId).populate('equipments').populate('engineers');
         return bussiness;
     }
 
@@ -35,12 +36,12 @@ export class BussinessService {
                     },
                     { path: 'user' }
                 ]
-            }).catch((error) => { throw ErrorHandler.throwDefaultInternalServerError(error) })
+            }).catch((error) => { throw ErrorHandler.throwDefaultInternalServerError(error) });
 
         var orders: [Order]
         bussiness.clenics.forEach((element) => {
             orders.concat(element.orders);
-        })
+        });
 
         return orders;
     }
@@ -96,7 +97,61 @@ export class BussinessService {
             })
             return equipments;
         } else {
-            throw ErrorHandler.throwCustomError("No tiene permisos para agregar un nuevo equipo médico al negocio especificado", HttpStatus.BAD_REQUEST);
+            throw ErrorHandler.throwCustomError("No tiene permisos para listar equipos medicos", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    async getEngineerListByBussinessId(bussinessId: string, jwtPayload: JWTPayloadDto) {
+        const bussiness = await this.getBussinessById(jwtPayload.bussinessId);
+        if (bussiness.user == jwtPayload.userId) {
+            return bussiness.engineers;
+        } else {
+            throw ErrorHandler.throwCustomError("No tiene permisos para listar ingenieros", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    async getFullClenicOrderList(bussinessId: string, jwtPayload: JWTPayloadDto) {
+        var orders = [];
+        const bussiness: Bussiness = await this._bussinessModel.findById(bussinessId)
+            .populate({
+                path: 'orders',
+                populate: [
+                    { path: 'clenic' },
+                    { path: 'engineer' },
+                    { path: 'equipment' }
+                ]
+            }).catch((error) => { throw ErrorHandler.throwDefaultInternalServerError(error) });
+        if (bussiness.user == jwtPayload.userId) {
+            return bussiness.orders;
+        } else {
+            throw ErrorHandler.throwCustomError("No tiene permisos para listar ordenes", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    async getFullAdminOrderList(bussinessId: string, jwtPayload: JWTPayloadDto) {
+        var orders = [];
+        const bussiness: Bussiness = await this._bussinessModel.findById(bussinessId)
+            .populate({
+                path: 'clenics',
+                populate: [
+                    {
+                        path: 'orders',
+                        populate: [
+                            { path: 'clenic' },
+                            { path: 'engineer' },
+                            { path: 'equipment' }
+                        ]
+                    },
+                    { path: 'user' }
+                ]
+            }).catch((error) => { throw ErrorHandler.throwDefaultInternalServerError(error) });
+        if (bussiness.user == jwtPayload.userId) {
+            bussiness.clenics.forEach((value) => {
+                orders = [...orders, ...value.orders];
+            })
+            return orders;
+        } else {
+            throw ErrorHandler.throwCustomError("No tiene permisos para listar ordenes", HttpStatus.BAD_REQUEST);
         }
     }
 

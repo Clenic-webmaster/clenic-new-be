@@ -4,7 +4,8 @@ import { Model, ClientSession } from 'mongoose';
 import { User } from 'src/models/interfaces';
 import { EngineerLocationDto, UserDto } from 'src/models/dto';
 import { hash } from 'bcrypt';
-import { ErrorHandler } from 'src/utils/errors';
+
+//import { ErrorHandler } from 'src/utils/errors';
 
 
 @Injectable()
@@ -29,7 +30,10 @@ export class UserService {
   async checkValidLowUserCredentials(email: string, companyIdentifier: string): Promise<boolean> {
     const users = await this.userModel.find({ email, companyIdentifier })
     if (users.length > 0) {
-      throw ErrorHandler.throwCustomError('El email ya se encuentra en uso dentro de su empresa.', HttpStatus.BAD_REQUEST)
+      throw new HttpException({
+        message: 'El email ya se encuentra en uso dentro de su empresa.',
+        statusCode: HttpStatus.BAD_REQUEST
+      }, HttpStatus.BAD_REQUEST);
     }
     return true;
   }
@@ -37,7 +41,10 @@ export class UserService {
   async checkValidClenicIdentifier(identifier: string, companyIdentifier: string): Promise<boolean> {
     const users = await this.userModel.find({ identifier, companyIdentifier })
     if (users.length > 0) {
-      throw ErrorHandler.throwCustomError('El nombre de la Clenic ya se encuentra en uso dentro de su empresa.', HttpStatus.BAD_REQUEST)
+      throw new HttpException({
+        message: 'El nombre de la Clenic ya se encuentra en uso dentro de su empresa.',
+        statusCode: HttpStatus.BAD_REQUEST
+      }, HttpStatus.BAD_REQUEST);
     }
     return true;
   }
@@ -101,7 +108,10 @@ export class UserService {
         message: "Posición actualizada con éxito"
       }
     } else {
-      throw ErrorHandler.throwNotFoundError("User");
+      throw new HttpException({
+        message: 'An error has occurred, please contact your administrator.'
+      }, HttpStatus.INTERNAL_SERVER_ERROR);
+      //throw ErrorHandler.throwNotFoundError("User");
     }
   }
 
@@ -121,7 +131,10 @@ export class UserService {
       })
       return positionList;
     } else {
-      throw ErrorHandler.throwCustomError('No se encontraron ingenieros.', HttpStatus.BAD_REQUEST);
+      throw new HttpException({
+        message: 'An error has occurred, please contact your administrator.'
+      }, HttpStatus.INTERNAL_SERVER_ERROR);
+      //throw ErrorHandler.throwCustomError('No se encontraron ingenieros.', HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -132,7 +145,10 @@ export class UserService {
         position: user.position
       }
     } else {
-      throw ErrorHandler.throwCustomError('No se encontró ingeniero.', HttpStatus.BAD_REQUEST);
+      throw new HttpException({
+        message: 'An error has occurred, please contact your administrator.'
+      }, HttpStatus.INTERNAL_SERVER_ERROR);
+      //throw ErrorHandler.throwCustomError('No se encontró ingeniero.', HttpStatus.BAD_REQUEST);
     }
   }
 }

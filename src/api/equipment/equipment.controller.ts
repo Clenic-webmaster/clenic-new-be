@@ -11,6 +11,8 @@ import { security } from 'src/utils/constants/security';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('equipment')
 export class EquipmentController {
+    //Equipment Controller
+    //TypeScript
     constructor(private readonly _equipmentService: EquipmentService) { }
 
     @Get('/list')

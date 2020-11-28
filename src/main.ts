@@ -10,6 +10,14 @@ async function bootstrap() {
   app.use(bodyParser.json({ limit: '120mb' }));
   app.use(bodyParser.urlencoded({ limit: '120mb', extended: true }));
   app.use(helmet());
+  var whitelist = ['https://localhost:4200', ''];
+  app.enableCors({
+    origin: function (origin, callback) {
+      callback(null, true)
+    },
+    allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe, Authorization',
+    methods: "GET,PUT,POST,DELETE,UPDATE,OPTIONS",
+  });
   app.useGlobalPipes(new ValidationPipe({
     validationError: {
       target: false,
