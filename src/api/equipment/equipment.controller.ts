@@ -7,7 +7,8 @@ import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/fi
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/utils/decorators';
 import { security } from 'src/utils/constants/security';
-
+import { ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('equipment')
 export class EquipmentController {
@@ -36,6 +37,18 @@ export class EquipmentController {
 
     @Roles(security.roles.ROLE_CLENIC)
     @Post('addNewEquipmentImage/:equipmentId')
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        schema: {
+            type: 'object',
+            properties: {
+                image: {
+                    type: 'string',
+                    format: 'binary',
+                },
+            },
+        },
+    })
     @UseInterceptors(FileInterceptor('image'))
     async addNewCatalogueImage(@UploadedFile() image, @Param('equipmentId') equipmentId: string, @Req() req) {
         let jwtPayload: JWTPayloadDto = req.user;

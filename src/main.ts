@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as bodyParser from 'body-parser';
 import * as helmet from 'helmet';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,6 +23,15 @@ async function bootstrap() {
       target: false,
     }
   }));
+  const options = new DocumentBuilder()
+    .addBearerAuth()
+    .setTitle('API REST FULL DOCUMENTATION')
+    .setDescription('API DOCUMENTATION FOR CLENIC BACKEND')
+    .setVersion('1.0')
+    .addTag('REST FULL API')
+    .build();
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('api', app, document); //PIPELINE TEST
   await app.listen(3000);
 }
 bootstrap();

@@ -10,7 +10,7 @@ on:
 
 jobs:
   Continuous-Integration:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Build Started
         uses: rjstone/discord-webhook-notify@v1
@@ -47,7 +47,7 @@ jobs:
 
   Continuous-Delivery:
     needs: Continuous-Integration
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       
       - name: Build Started
@@ -94,7 +94,7 @@ jobs:
 
   Continuous-Deployment:
     needs: Continuous-Integration
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Build Started
         uses: rjstone/discord-webhook-notify@v1

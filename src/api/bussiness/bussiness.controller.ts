@@ -8,7 +8,9 @@ import { JWTPayloadDto, EquipmentDto, OrderDto, AssignEngineerDto, UpdateOrderDt
 import { OrderService } from '../order/order.service';
 import { ErrorHandler } from 'src/utils/errors';
 import { EquipmentService } from '../equipment/equipment.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('bussiness')
 export class BussinessController {
