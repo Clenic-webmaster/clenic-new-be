@@ -5,13 +5,13 @@ import { Type } from 'class-transformer';
 import { security } from 'src/utils/constants/security';
 
 export class LoginUserDto {
-  @IsNotEmpty() @IsString() readonly username: string;
-  @IsNotEmpty() @IsString() readonly password: string;
-  @IsNotEmpty() @IsString() readonly companyIdentifier: string;
+  @ApiProperty() @IsNotEmpty() @IsString() readonly username: string;
+  @ApiProperty() @IsNotEmpty() @IsString() readonly password: string;
+  @ApiProperty() @IsNotEmpty() @IsString() readonly companyIdentifier: string;
 }
 
 export class LogoutUserDto {
-  @IsNotEmpty() @IsString() readonly sessionToken: string;
+  @ApiProperty() @IsNotEmpty() @IsString() readonly sessionToken: string;
 }
 
 export class UserBussinessInformationDto {
